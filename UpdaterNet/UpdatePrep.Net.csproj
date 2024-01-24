@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0-windows</TargetFramework>
+		<Nullable>annotations</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<UseWPF>true</UseWPF>
+		<UseWindowsForms>True</UseWindowsForms>
+		<BaseOutputPath>..\..\bin</BaseOutputPath>
+		<RootNamespace>drz.Updater</RootNamespace>
+
+		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+		<StartupObject>drz.UpdatePrep.Command</StartupObject>
+
+
+		<IsPublishable>False</IsPublishable>
+
+		<ApplicationIcon>1001.ico</ApplicationIcon>
+		
+		<!--https://learn.microsoft.com/ru-ru/dotnet/core/project-sdk/msbuild-props#assembly-attribute-properties-->
+		 
+		<!--атрибуты сборки-->
+		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+		<Title>Updater prep Title</Title>
+		<Product>Updater</Product>
+		<Company>doctorRaz@gmail.com</Company>
+		<Authors>Разыграев Андрей</Authors>
+		<Description>Подготовка описания xml для утилиты обновления</Description>
+		<Copyright>Разыграев Андрей</Copyright>
+		<Trademark>©doctorRAZ 2014-2024</Trademark>
+	
+		<!--атрибуты сборки-->
+
+		<!--<Version />-->
+		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+		<Deterministic>False</Deterministic>
+		<AssemblyVersion>0.0.*</AssemblyVersion>
+		<PackageId>Upd.NET</PackageId>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<!--<Version />-->
+
+
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\src\Program.cs" Link="Program.cs" />
+	  <Compile Include="..\src\UpdateCustom.cs" Link="UpdateCustom.cs" />
+	  <Compile Include="..\src\Utils.cs" Link="Utils.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="1001.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Properties\Resources.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Resources.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+</Project>
