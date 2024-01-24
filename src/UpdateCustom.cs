@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-//using System.Management;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Permissions;
