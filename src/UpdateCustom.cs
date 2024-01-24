@@ -255,7 +255,7 @@ namespace drz.UpdatePrep
                         XElement Project = new XElement("Project", versionInfPrj.FileDescription);
                         Projects.Add(Project);
                         //! атрибуты
-                        Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+                        Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
                         Project.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
                         Project.Add(new XAttribute("FileDescription", versionInfPrj.FileDescription));
                         Project.Add(new XAttribute("OriginalFilename", versionInfPrj.OriginalFilename));
