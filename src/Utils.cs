@@ -18,7 +18,7 @@ namespace drz.Updater
         internal ConsoleKey ConsoleKeyY = ConsoleKey.Y;
         internal ConsoleKey ConsoleKeyN = ConsoleKey.N;
 
-        string sConsoleKeyY => ConsoleKeyY.ToString();
+        string sConsoleKeyY => ConsoleKeyY.ToString(); 
         string sConsoleKeyN => ConsoleKeyN.ToString();
 
         /// <summary>Чтение кнопок консоли</summary>
