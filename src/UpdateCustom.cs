@@ -109,7 +109,6 @@ namespace drz.UpdatePrep
             get
             {
                 #region OFD Package
-                //OpenFileDialog ofd=new OpenFileDialog();
                 ofd.Multiselect = true;
                 ofd.Title = "Выбери файлы Package, можно несколько";
                 ofd.Filter = "Все файлы (*.*)|*.*|"
@@ -130,7 +129,7 @@ namespace drz.UpdatePrep
 
                 #endregion
 
-
+                //think обавлять файл пакадж в архив
 
                 //!Packages
                 XElement Packages = new XElement("Packages");
@@ -149,7 +148,6 @@ namespace drz.UpdatePrep
             get
             {
                 #region OFD Prop
-                //OpenFileDialog ofd=new OpenFileDialog();
                 ofd.Multiselect = true;
                 ofd.Title = "Выбери главный файл проекта, можно несколько";
                 ofd.Filter = "Все файлы (*.*)|*.*|"
@@ -216,10 +214,6 @@ namespace drz.UpdatePrep
                 #endregion
 
                 #region Header XML
-
-                //think возможно вынести в свойства
-
-                //XDOC.Add(ROOT);//цепляем к doc
 
                 //think возможно надо добавить дату и прочие служебные данные
 
