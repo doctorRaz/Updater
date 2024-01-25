@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper.NF", "UpdaterNF\Wrapper.NF.csproj", "{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wrapper.Net", "UpdaterNet\Wrapper.Net.csproj", "{8C08301C-852B-40C7-9A78-5C053095215C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{ADB7C78B-FF28-4AA7-87AE-A5E09DEFED1E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -14,20 +10,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решен
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wrapper.Net", "WrapperNet\Wrapper.Net.csproj", "{9CEBF87D-7AF2-457C-9586-6CD9D0B4FE88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper.NF", "WrapperNF\Wrapper.NF.csproj", "{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9CEBF87D-7AF2-457C-9586-6CD9D0B4FE88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CEBF87D-7AF2-457C-9586-6CD9D0B4FE88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CEBF87D-7AF2-457C-9586-6CD9D0B4FE88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CEBF87D-7AF2-457C-9586-6CD9D0B4FE88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C08301C-852B-40C7-9A78-5C053095215C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C08301C-852B-40C7-9A78-5C053095215C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C08301C-852B-40C7-9A78-5C053095215C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C08301C-852B-40C7-9A78-5C053095215C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
