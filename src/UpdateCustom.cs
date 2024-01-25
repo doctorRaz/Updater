@@ -1,4 +1,6 @@
-﻿using System;
+﻿using drz.Updater;
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
@@ -198,10 +200,12 @@ namespace drz.UpdatePrep
                 //***
 
                 #region Маски исключений
-
+                //think вынести в класс
                 string sExcludedSupportedExt;
                 List<string> arrExcludedSupportedExt = new List<string>();
                 arrExcludedSupportedExt.Add("*.bak");
+                arrExcludedSupportedExt.Add("*.pdb");
+                arrExcludedSupportedExt.Add("*.json");
                 arrExcludedSupportedExt.Add("*.package");
                 arrExcludedSupportedExt.Add("*.packagedescription");
                 sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
@@ -244,7 +248,11 @@ namespace drz.UpdatePrep
                         XElement Project = new XElement("Project", versionInfPrj.FileDescription);
                         Projects.Add(Project);
                         //! атрибуты
+#if NF
+                        Project.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
+#else
                         Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
+#endif
                         Project.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
                         Project.Add(new XAttribute("FileDescription", versionInfPrj.FileDescription));
                         Project.Add(new XAttribute("OriginalFilename", versionInfPrj.OriginalFilename));
@@ -256,7 +264,7 @@ namespace drz.UpdatePrep
                         Project.Add(new XAttribute("CompanyName", versionInfPrj.CompanyName));
                         Project.Add(new XAttribute("Comments", versionInfPrj.Comments));
 
-                        #endregion
+#endregion
                     }
                     else
                     {
@@ -264,10 +272,14 @@ namespace drz.UpdatePrep
 
                         XElement Module = new XElement("Module"/*, versionInfoMod.ProductName*/);
                         Modules.Add(Module);
+#if NF
+                        Module.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+#else
                         Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+#endif
                         Module.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
 
-                        #endregion
+#endregion
                     }
                 }
                 Debug.WriteLine(XDOC.ToString());
