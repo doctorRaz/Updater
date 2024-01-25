@@ -52,12 +52,21 @@ namespace drz.UpdatePrep
         [STAThread]
         public static void Main(string[] args)
         {
-            //string path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\All.package";
-            //string  relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\";
+            string path, relativeTo, sp;
 
-            //string sp=  Path.GetFullPath(path).Substring(Path.GetFullPath(relativeTo).Length + 1);
+            path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\PlotSPDSn.dll";
+            relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\";
 
-            //sp = Path.GetRelativePath(relativeTo, path);
+
+            sp = Deb.MakeRelativePath(relativeTo, path);
+            sp = Path.GetRelativePath(relativeTo, path);
+
+            path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\PlotSPDSn.dll";
+            relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle";
+            sp = Deb.MakeRelativePath(relativeTo, path);
+
+            sp = Path.GetRelativePath(relativeTo, path);
+
             //***
 
             XmlWriter UC = new XmlWriter();
@@ -65,7 +74,7 @@ namespace drz.UpdatePrep
             //! читаем свойства файлов обновления и пишем в XML
             if (!UC.XmlPropWriter)
             {
-                    Console.WriteLine(UC.sErr);
+                Console.WriteLine(UC.sErr);
                 Console.ReadLine();
                 return;
             }
@@ -123,7 +132,7 @@ namespace drz.UpdatePrep
             //***R
 
 
-        
+
             //think надо ли окно настроек или консольуже хорошо???
             //var wpfPrep = new WpfPrep();
             //bool? retval = wpfPrep.ShowDialog();

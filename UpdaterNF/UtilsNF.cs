@@ -8,7 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 
-//!++Только для Net Framework
+//!++Только для сборки на Net Framework
 namespace drz.Updater
 {
     /// <summary>вспомогательные утилиты
@@ -93,10 +93,10 @@ namespace drz.Updater
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="UriFormatException"></exception>
         /// <exception cref="InvalidOperationException"></exception>
-        public static String MakeRelativePath(String fromPath, String toPath)
+        public static String MakeRelativePath(string fromPath, string toPath)
         {
-            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
-            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+            if (string.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (string.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
 
             Uri fromUri = new Uri(fromPath);
             Uri toUri = new Uri(toPath);

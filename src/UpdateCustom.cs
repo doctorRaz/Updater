@@ -170,7 +170,7 @@ namespace drz.UpdatePrep
                 foreach (string item in sFilePrgs)
                 {
                     sFilePrg = item;
-                    Console.WriteLine("Project: "+ sFilePrg);
+                    Console.WriteLine("Project: " + sFilePrg);
                     if (string.IsNullOrEmpty(versionInfPrj.FileVersion))
                     {
                         sErr = "Неподходящий файл для главного файла проекта!"
@@ -181,7 +181,7 @@ namespace drz.UpdatePrep
                 }
 
                 //***
-                //! ставим директорию приложения
+                //!++ корневая директория приложения /прибита гвоздями/
                 sDirFiles = Directory.GetParent(sFilePrg).FullName;
 
                 #region XML      
@@ -250,8 +250,8 @@ namespace drz.UpdatePrep
                         Projects.Add(Project);
                         //! атрибуты
 #if NF
-                        //Project.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
-                        Project.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
+                        Project.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
+                        //Project.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
 #else
                         Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
 #endif
@@ -266,7 +266,7 @@ namespace drz.UpdatePrep
                         Project.Add(new XAttribute("CompanyName", versionInfPrj.CompanyName));
                         Project.Add(new XAttribute("Comments", versionInfPrj.Comments));
 
-#endregion
+                        #endregion
                     }
                     else
                     {
@@ -275,14 +275,16 @@ namespace drz.UpdatePrep
                         XElement Module = new XElement("Module"/*, versionInfoMod.ProductName*/);
                         Modules.Add(Module);
 #if NF
-                        //Module.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
-                        Module.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+                        string stst = Utils.MakeRelativePath(sDirFiles, sFilePrg);//x прибить
+                        Module.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+                        //Module.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
 #else
+                        string stst = Path.GetRelativePath(sDirFiles, sFilePrg);
                         Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
 #endif
                         Module.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
 
-#endregion
+                        #endregion
                     }
                 }
                 Debug.WriteLine(XDOC.ToString());
