@@ -13,6 +13,17 @@
 >нечетные минор обновление вспомогательных версий переход на четную
 
 соответственно пока все модули не будут обновлены минор++ не произойдет
+
+
+   пишем только имя файла который обновить
+   подумать над обновлением пакадже , типа флаг подниматься уровнем выше, либо относительный путь от файла стартера, пусть файл проекта передает свой путь параметром обновлятору
+   забивать имена файлов, в словарик, если дубликат, то выход с ошибкой, что дубликаты имен
+  в словарик что бы пропускать одинаковые имена
+
+после распаковки пытаться положиь файлы по путям или тупо искать поиском?? если больше чем один чего делать?
+
+
+
 */
 
 //***
@@ -52,20 +63,7 @@ namespace drz.UpdatePrep
         [STAThread]
         public static void Main(string[] args)
         {
-            string path, relativeTo, sp;
 
-            path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\PlotSPDSn.dll";
-            relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\";
-
-
-            sp = Deb.MakeRelativePath(relativeTo, path);
-            sp = Path.GetRelativePath(relativeTo, path);
-
-            path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\PlotSPDSn.dll";
-            relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle";
-            sp = Deb.MakeRelativePath(relativeTo, path);
-
-            sp = Path.GetRelativePath(relativeTo, path);
 
             //***
 
@@ -75,7 +73,8 @@ namespace drz.UpdatePrep
             if (!UC.XmlPropWriter)
             {
                 Console.WriteLine(UC.sErr);
-                Console.ReadLine();
+                Console.WriteLine("Press any key");
+                Console.ReadKey();
                 return;
             }
 
@@ -89,14 +88,13 @@ namespace drz.UpdatePrep
                 if (!UC.XmlPackageWriter)
                 {
                     Console.WriteLine(UC.sErr);
-                    Console.ReadLine();
-                    //MessageBox.Show(UC.sErr, "UpCust", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("Press any key");
+                    Console.ReadKey();
                     return;
                 }
             }
 
-            //think получать текстовое описание  обновления, what news
-            //!если все хорошо запросить файл описания обновки
+            //!если все хорошо запросить файл описания обновки what news
             UT.sConsolMesag = "Добавить в XML описание обновлений из файла??";
             if (UT.ConsoleReadKey == ConsoleKey.Y)
             {
@@ -104,7 +102,8 @@ namespace drz.UpdatePrep
                 if (!UC.XmlDescriptorWriter)
                 {
                     Console.WriteLine(UC.sErr);
-                    Console.ReadLine();
+                    Console.WriteLine("Press any key");
+                    Console.ReadKey();
                     return;
                 }
             }
@@ -116,26 +115,24 @@ namespace drz.UpdatePrep
                 Console.WriteLine(UC.XDOC.ToString());
             }
 
+
+            //think предложить упаковку файлов собранных в XML в zip с паролем
+            //выбор места сохранения файла
+            //дописать этот zip в XML
+
             //!сохранимся
             //think тут тоже добавить запрос сохранить по умолчанию или куда скажет юзер
             UC.XDOC.Save(UC.sFullNameXML);
 
-            //todo предложить упаковку файлов собранных в XML в zip с паролем
-            //выбор места сохранения файла
-            //дописать этот zip в XML
+            //think прибить папку в темпе
+
 
             Console.WriteLine("\tXML saved");
             Console.WriteLine("Press any key");
             Console.ReadKey();
             return;
 
-            //***R
-
-
-
-            //think надо ли окно настроек или консольуже хорошо???
-            //var wpfPrep = new WpfPrep();
-            //bool? retval = wpfPrep.ShowDialog();
+    
         }
 
     }

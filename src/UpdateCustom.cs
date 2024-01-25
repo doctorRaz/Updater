@@ -35,8 +35,16 @@ namespace drz.UpdatePrep
 
         #region Пути
 
-        /// <summary> директория приложения </summary>
-        string sDirFiles { get; set; }
+        /// <summary> директория приложения 
+        /// <br> задаем один раз потом не меняем</br>
+        /// <br> относительно этого пути будет все собираться</br>
+        /// </summary>
+        internal string sDirFiles { get; set; }
+
+        /// <summary>
+        /// папочка куда предварительно копируем компоненты приложения
+        /// </summary>
+        internal string sDirTemp { get; set; }
 
         /// <summary>файл приложения, библиотек и прочих файлов</summary>
         string sFilePrg { get; set; }
@@ -76,9 +84,28 @@ namespace drz.UpdatePrep
         /// <summary>файлы приложения</summary>
         internal OpenFileDialog ofd { get; set; }
 
+
         #endregion
 
+        #region Маски исключений
+        /// Маски исключений файлов, которые не брать
+        /// </summary>
+        List<string> arrExcludedSupportedExt
+        {
+            get
+            {
+                return new List<string>
+                {
+                    "*.bak",
+                    "*.pdb",
+                    "*.json",
+                    "*.package",
+                    "*.packagedescription"
+                };
+            }
+        }
 
+        #endregion
 
         //***R
 
@@ -89,7 +116,7 @@ namespace drz.UpdatePrep
         {
             get
             {
-
+                //? описатель обновления
 
                 //!Descriptions
                 XElement Descriptions = new XElement("Descriptions");
@@ -128,12 +155,24 @@ namespace drz.UpdatePrep
 
                 #endregion
 
-                //think обавлять файл пакадж в архив
-
                 //!Packages
                 XElement Packages = new XElement("Packages");
                 ROOT.Add(Packages);
 
+                foreach (string fil in sFilePrgs)
+                {
+                    //!Package
+                    //think добавлять файл пакадж в папку для архива
+                    sFilePrg = fil;
+                    XElement Package = new XElement("Package"/*, versionInfoMod.ProductName*/);
+                    Packages.Add(Package);
+#if NF
+                    Package.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+#else
+                        Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+#endif
+                    Package.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
+                }
 
                 return true;
             }
@@ -143,12 +182,12 @@ namespace drz.UpdatePrep
         ////писатель свойств файлов
         /// </summary>
         internal bool XmlPropWriter
-        {
+        {//think растащить все по классам
             get
             {
                 #region OFD Prop
-                ofd.Multiselect = true;
-                ofd.Title = "Выбери главный файл проекта, можно несколько";
+                ofd.Multiselect = false;
+                ofd.Title = "Выбери главный файл проекта";
                 ofd.Filter = "Все файлы (*.*)|*.*|"
                              + ".NET assemblies (*.exe;*.dll)|"
                              + "*.exe;*.dll";
@@ -165,8 +204,9 @@ namespace drz.UpdatePrep
                 sFilePrg = ofd.FileName;
 
                 #endregion
-                //***
-                //!сразу проверим годится ли файл есть ли там версия
+
+                #region проверка годится ли файл есть ли там FileVersion
+
                 foreach (string item in sFilePrgs)
                 {
                     sFilePrg = item;
@@ -180,37 +220,43 @@ namespace drz.UpdatePrep
                     }
                 }
 
-                //***
-                //!++ корневая директория приложения /прибита гвоздями/
+                #endregion
+
+                //фильтр исключаемых масок
+                string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
+
+                //!+ корневая директория приложения /прибита гвоздями/
                 sDirFiles = Directory.GetParent(sFilePrg).FullName;
 
-                #region XML      
-                /// <summary>имя ХМЛ 
-                /// <br>в каталоге приложения</br></summary>
-                string sDirParentXML = Directory.GetParent(sDirFiles).FullName;
 
-                /// <summary> имя XML</summary>
-                string sShortNameXML = versionInfPrj.ProductName + ".packagedescription";//.xml";//? имя приложения PlotSPDS
+
+
+                #region XML file name      
+               //директория XML над каталогом приложения
+                string sDirParent = Directory.GetParent(sDirFiles).FullName;
+                               
+                string  sProductName = versionInfPrj.ProductName;
+                //до минора версия
+                Version vFileVersion = new Version(versionInfPrj.FileVersion);
+
+                string sMinorVersion = vFileVersion.Major + "." + vFileVersion.Minor;
+                
+                //имя файла XML
+                string sShortNameXML = sProductName + "_" + sMinorVersion + ".packagedescription";//.xml";//? имя приложения PlotSPDS
 
                 //!полный путь к XML 
-                sFullNameXML = Path.Combine(sDirParentXML, sShortNameXML);
+                sFullNameXML = Path.Combine(sDirParent, sShortNameXML);
 
                 #endregion
-
                 //***
 
-                #region Маски исключений
-                //think вынести в класс
-                string sExcludedSupportedExt;
-                List<string> arrExcludedSupportedExt = new List<string>();
-                arrExcludedSupportedExt.Add("*.bak");
-                arrExcludedSupportedExt.Add("*.pdb");
-                arrExcludedSupportedExt.Add("*.json");
-                arrExcludedSupportedExt.Add("*.package");
-                arrExcludedSupportedExt.Add("*.packagedescription");
-                sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
-
-                #endregion
+                //? проверить есть ли папочка в темпе, если есть прибить и создать по новой, не забыть по окончании опять прибить,
+                //? подсмотреть в печати
+                //собираем путь папочки  темпе
+                //темп продукт минор
+                string sDirTemp=Path.GetTempPath();
+                string sDirFolderTmp = Path.Combine(Path.GetTempPath(),sProductName + "_" + sMinorVersion);
+                bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
 
                 #region Header XML
 
@@ -229,33 +275,27 @@ namespace drz.UpdatePrep
                 #endregion
 
                 //пошли перебирать файлы
-                //? пишем только имя файла который обновить
-                //? подумать над обновлением пакадже , типа флаг подниматься уровнем выше, либо относительный путь от файла стартера, пусть файл проекта передает свой путь параметром обновлятору
-                //? забивать имена файлов, в словарик, если дубликат, то выход с ошибкой, что дубликаты имен
-
                 foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
                 {
-                    //? в словарик что бы пропускать одинаковые имена
-
+                    //think возможно здесь же их собирать в темп/имя приложения для архивации
+                   
                     sFilePrg = file;
 
-                    //Console.WriteLine(sFilePrg);
-                    //если файл проекта
-                    //? проверять если файл имеет FileVersion то в Project иначе в модули
-                    if (sFilePrgs.Contains(file))
-                    {// если это файл проекта 
+                    //!+ если файл имеет FileVersion то в Project иначе в модули
+                    if (!string.IsNullOrEmpty(versionInfPrj.FileVersion))
+                    {
                         #region Projects
-
                         XElement Project = new XElement("Project", versionInfPrj.FileDescription);
                         Projects.Add(Project);
-                        //! атрибуты
+
+                        //! атрибуты пока тянем все подряд из доступных
 #if NF
-                        Project.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
-                        //Project.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
+                        Project.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
 #else
                         Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
 #endif
                         Project.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
+                        Project.Add(new XAttribute("ProductName", versionInfPrj.ProductName));
                         Project.Add(new XAttribute("FileDescription", versionInfPrj.FileDescription));
                         Project.Add(new XAttribute("OriginalFilename", versionInfPrj.OriginalFilename));
                         Project.Add(new XAttribute("InternalName", versionInfPrj.InternalName));
@@ -263,9 +303,19 @@ namespace drz.UpdatePrep
                         Project.Add(new XAttribute("ProductVersion", versionInfPrj.ProductVersion));
                         Project.Add(new XAttribute("LegalTrademarks", versionInfPrj.LegalTrademarks));
                         Project.Add(new XAttribute("LegalCopyright", versionInfPrj.LegalCopyright));
-                        Project.Add(new XAttribute("CompanyName", versionInfPrj.CompanyName));
-                        Project.Add(new XAttribute("Comments", versionInfPrj.Comments));
+                        //Project.Add(new XAttribute("CompanyName", versionInfPrj.CompanyName));
+                        //Project.Add(new XAttribute("Comments", versionInfPrj.Comments));
 
+                        //!если файл выбранного проекта
+                        if (sFilePrgs.Contains(file))
+                        {
+                            //признак, что файл в корне каталога и был выбран разработчиком
+                            Project.Add(new XAttribute("root", true));
+                        }
+                        else
+                        {
+                            Project.Add(new XAttribute("root", false));
+                        }
                         #endregion
                     }
                     else
@@ -275,11 +325,8 @@ namespace drz.UpdatePrep
                         XElement Module = new XElement("Module"/*, versionInfoMod.ProductName*/);
                         Modules.Add(Module);
 #if NF
-                        string stst = Utils.MakeRelativePath(sDirFiles, sFilePrg);//x прибить
-                        Module.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
-                        //Module.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+                        Module.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
 #else
-                        string stst = Path.GetRelativePath(sDirFiles, sFilePrg);
                         Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
 #endif
                         Module.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));

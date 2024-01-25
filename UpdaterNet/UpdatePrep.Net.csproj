@@ -58,7 +58,6 @@
 	  <Compile Include="..\src\Program.cs" Link="Program.cs" />
 	  <Compile Include="..\src\UpdateCustom.cs" Link="UpdateCustom.cs" />
 	  <Compile Include="..\src\Utils.cs" Link="Utils.cs" />
-	  <Compile Include="..\UpdaterNF\deb.cs" Link="deb.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
