@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-
+//!Updater
 
 
 namespace drz.UpdatePrep
@@ -179,8 +179,6 @@ namespace drz.UpdatePrep
                         return false;
                     }
                 }
-
-
 
                 //***
                 //! ставим директорию приложения
