@@ -169,7 +169,7 @@ namespace drz.UpdatePrep
 #if NF
                     Package.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
 #else
-                        Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+                    Package.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
 #endif
                     Package.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
                 }
@@ -232,15 +232,15 @@ namespace drz.UpdatePrep
 
 
                 #region XML file name      
-               //директория XML над каталогом приложения
+                //директория XML над каталогом приложения
                 string sDirParent = Directory.GetParent(sDirFiles).FullName;
-                               
-                string  sProductName = versionInfPrj.ProductName;
+
+                string sProductName = versionInfPrj.ProductName;
                 //до минора версия
                 Version vFileVersion = new Version(versionInfPrj.FileVersion);
 
                 string sMinorVersion = vFileVersion.Major + "." + vFileVersion.Minor;
-                
+
                 //имя файла XML
                 string sShortNameXML = sProductName + "_" + sMinorVersion + ".packagedescription";//.xml";//? имя приложения PlotSPDS
 
@@ -254,8 +254,8 @@ namespace drz.UpdatePrep
                 //? подсмотреть в печати
                 //собираем путь папочки  темпе
                 //темп продукт минор
-                string sDirTemp=Path.GetTempPath();
-                string sDirFolderTmp = Path.Combine(Path.GetTempPath(),sProductName + "_" + sMinorVersion);
+                string sDirTemp = Path.GetTempPath();
+                string sDirFolderTmp = Path.Combine(Path.GetTempPath(), sProductName + "_" + sMinorVersion);
                 bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
 
                 #region Header XML
@@ -278,7 +278,7 @@ namespace drz.UpdatePrep
                 foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
                 {
                     //think возможно здесь же их собирать в темп/имя приложения для архивации
-                   
+
                     sFilePrg = file;
 
                     //!+ если файл имеет FileVersion то в Project иначе в модули
