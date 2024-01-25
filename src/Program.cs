@@ -1,4 +1,22 @@
-﻿using drz.Updater;
+﻿/*
+#При генерации обновления:
+
+1. К названию XML файла добавлять **minor** программы
+2. К названию zip добавлять **minor** программы 
+>Все обновления внутри **minor** только главный модуль программы + модули имеющие _FileVersion_. 
+
+Соответственно каждый минор обновляется из своего zip+minor
+* Изменения minor если добавились или изменились фалы не имеющие _FileVersion_ (lsp, cfg, dll(c++), 
+* При след обновлении при изменении minor++ обновка тянется из другого zip++minor (в котором только модули имеющие версию)
+и так по кругу..
+>т.е. например четные минор только обновления основных модулей
+>нечетные минор обновление вспомогательных версий переход на четную
+
+соответственно пока все модули не будут обновлены минор++ не произойдет
+*/
+
+//***
+using drz.Updater;
 
 using System;
 using System.Collections.Generic;
@@ -13,6 +31,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+
+
+
 
 
 //https://learn.microsoft.com/ru-ru/dotnet/core/project-sdk/msbuild-props#assembly-attribute-properties
