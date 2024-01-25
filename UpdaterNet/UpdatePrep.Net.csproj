@@ -54,6 +54,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Include="..\src\Extensions.cs" Link="Extensions.cs" />
 	  <Compile Include="..\src\Program.cs" Link="Program.cs" />
 	  <Compile Include="..\src\UpdateCustom.cs" Link="UpdateCustom.cs" />
 	  <Compile Include="..\src\Utils.cs" Link="Utils.cs" />

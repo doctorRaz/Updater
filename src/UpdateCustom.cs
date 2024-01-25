@@ -241,6 +241,7 @@ namespace drz.UpdatePrep
 
                     //Console.WriteLine(sFilePrg);
                     //если файл проекта
+                    //? проверять если файл имеет FileVersion то в Project иначе в модули
                     if (sFilePrgs.Contains(file))
                     {// если это файл проекта 
                         #region Projects
@@ -249,6 +250,7 @@ namespace drz.UpdatePrep
                         Projects.Add(Project);
                         //! атрибуты
 #if NF
+                        //Project.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
                         Project.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
 #else
                         Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
@@ -273,6 +275,7 @@ namespace drz.UpdatePrep
                         XElement Module = new XElement("Module"/*, versionInfoMod.ProductName*/);
                         Modules.Add(Module);
 #if NF
+                        //Module.Add(new XAttribute("RefPath", Utils.MakeRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
                         Module.Add(new XAttribute("RefPath", Utils.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
 #else
                         Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));

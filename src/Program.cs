@@ -52,6 +52,12 @@ namespace drz.UpdatePrep
         [STAThread]
         public static void Main(string[] args)
         {
+            //string path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\All.package";
+            //string  relativeTo = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\PlotSPDS.bundle\";
+
+            //string sp=  Path.GetFullPath(path).Substring(Path.GetFullPath(relativeTo).Length + 1);
+
+            //sp = Path.GetRelativePath(relativeTo, path);
             //***
 
             XmlWriter UC = new XmlWriter();

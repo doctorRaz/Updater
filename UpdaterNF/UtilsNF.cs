@@ -7,104 +7,120 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
+
+//!++Только для Net Framework
 namespace drz.Updater
 {
     /// <summary>вспомогательные утилиты
     /// <br>только для писателя и паковщика</br></summary>
-  internal partial class Utils
+    internal partial class Utils
     {
-        public static string GetRelativePath(string relativeTo, string path)
+     //https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
+        /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
+        /// <returns>The relative path from the start directory to the end path.</returns>
+        /// <exception cref="ArgumentNullException"><paramref name="fromPath"/> or <paramref name="toPath"/> is <c>null</c>.</exception>
+        /// <exception cref="UriFormatException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static string GetRelativePath2(string fromPath, string toPath)
         {
-            return "";
+            if (string.IsNullOrEmpty(fromPath))
+            {
+                throw new ArgumentNullException("fromPath");
+            }
+
+            if (string.IsNullOrEmpty(toPath))
+            {
+                throw new ArgumentNullException("toPath");
+            }
+
+            Uri fromUri = new Uri(AppendDirectorySeparatorChar(fromPath));
+            Uri toUri = new Uri(AppendDirectorySeparatorChar(toPath));
+
+            if (fromUri.Scheme != toUri.Scheme)
+            {
+                return toPath;
+            }
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (string.Equals(toUri.Scheme, Uri.UriSchemeFile, StringComparison.OrdinalIgnoreCase))
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+
+            return relativePath;
+        }
+
+        private static string AppendDirectorySeparatorChar(string path)
+        {
+            // Append a slash only if the path is a directory and does not have a slash.
+            if (!Path.HasExtension(path) &&
+                !path.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                return path + Path.DirectorySeparatorChar;
+            }
+
+            return path;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="relativeTo"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string GetRelativePath( /*this*/ string relativeTo, string path)
+        {
+            //public static string GetPartialPath(this string fullPath, string partialPath)
+            //{
+            //return path.Substring(relativeTo.Length);
+            //!+Заглушка, 
+             return Path.GetFullPath(path).Substring(Path.GetFullPath(relativeTo).Length + 1);
+        }
+
+        //https://stackoverflow.com/questions/275689/how-to-get-relative-path-from-absolute-path
+        /// <summary>
+        /// Creates a relative path from one file or folder to another.
+        /// </summary>
+        /// <param name="fromPath">Contains the directory that defines the start of the relative path.</param>
+        /// <param name="toPath">Contains the path that defines the endpoint of the relative path.</param>
+        /// <returns>The relative path from the start directory to the end path or <c>toPath</c> if the paths are not related.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="UriFormatException"></exception>
+        /// <exception cref="InvalidOperationException"></exception>
+        public static String MakeRelativePath(String fromPath, String toPath)
+        {
+            if (String.IsNullOrEmpty(fromPath)) throw new ArgumentNullException("fromPath");
+            if (String.IsNullOrEmpty(toPath)) throw new ArgumentNullException("toPath");
+
+            Uri fromUri = new Uri(fromPath);
+            Uri toUri = new Uri(toPath);
+
+            if (fromUri.Scheme != toUri.Scheme) { return toPath; } // path can't be made relative.
+
+            Uri relativeUri = fromUri.MakeRelativeUri(toUri);
+            String relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+            if (toUri.Scheme.Equals("file", StringComparison.InvariantCultureIgnoreCase))
+            {
+                relativePath = relativePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            }
+
+            return relativePath;
         }
 
     }
 
-
-    /// <summary>
-    /// Расширения
-    /// </summary>
     internal static partial class Extensions
     {
-        /// <summary>
-        /// Сравнение версий сборок
-        /// <br>https://stackoverflow.com/a/28695949</br>
-        /// </summary>
-        /// <param name="version">новая версия</param>
-        /// <param name="otherVersion">старая версия</param>
-        /// <param name="significantParts"> Major-1 Minor-2 Build-3 Revision-4</param>
-        /// <returns> новая больше =1, новая меньше =-1, равны =0 </returns>
-        public static int CompareTo(this Version version, Version otherVersion, int significantParts)
-        {
-            if (version == null)
-            {
-                throw new ArgumentNullException("version");
-            }
-            if (otherVersion == null)
-            {
-                return 1;
-            }
 
-            if (version.Major != otherVersion.Major && significantParts >= 1)
-                if (version.Major > otherVersion.Major)
-                    return 1;
-                else
-                    return -1;
-
-            if (version.Minor != otherVersion.Minor && significantParts >= 2)
-                if (version.Minor > otherVersion.Minor)
-                    return 1;
-                else
-                    return -1;
-
-            if (version.Build != otherVersion.Build && significantParts >= 3)
-                if (version.Build > otherVersion.Build)
-                    return 1;
-                else
-                    return -1;
-
-            if (version.Revision != otherVersion.Revision && significantParts >= 4)
-                if (version.Revision > otherVersion.Revision)
-                    return 1;
-                else
-                    return -1;
-
-            return 0;
-        }
-
-
-        /// <summary>
-        /// конвертим XmlDocument в XDocument
-        /// https://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
-        /// </summary>
-        /// <param name="xmlDocument"></param>
-        /// <returns></returns>
-        public static XDocument ToXDocument(this XmlDocument xmlDocument)
-        {
-            using (XmlNodeReader nodeReader = new XmlNodeReader(xmlDocument))
-            {
-                nodeReader.MoveToContent();
-                return XDocument.Load(nodeReader);
-            }
-        }
-
-        /// <summary>
-        /// конвертим XDocument в XmlDocument
-        /// https://stackoverflow.com/questions/1508572/converting-xdocument-to-xmldocument-and-vice-versa
-        /// </summary>
-        /// <param name="xDocument"></param>
-        /// <returns></returns>
-        public static XmlDocument ToXmlDocument(this XDocument xDocument)
-        {
-            XmlDocument xmlDocument = new XmlDocument();
-            //xmlDocument.PreserveWhitespace = true;
-            using (XmlReader xmlReader = xDocument.CreateReader())
-            {
-                xmlDocument.Load(xmlReader);
-            }
-            return xmlDocument;
-        }
 
     }
 
 }
+

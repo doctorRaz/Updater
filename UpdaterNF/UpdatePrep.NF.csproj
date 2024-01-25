@@ -58,6 +58,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\src\Extensions.cs">
+      <Link>Extensions.cs</Link>
+    </Compile>
     <Compile Include="..\src\Program.cs">
       <Link>Program.cs</Link>
     </Compile>
