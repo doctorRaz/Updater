@@ -67,7 +67,7 @@ namespace drz.UpdatePrep
 
             //***
 
-            XmlWriter UC = new XmlWriter();
+            Wrapper UC = new Wrapper();
 
             //! читаем свойства файлов обновления и пишем в XML
             if (!UC.XmlPropWriter)

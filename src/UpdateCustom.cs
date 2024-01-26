@@ -23,9 +23,10 @@ namespace drz.UpdatePrep
     ///Подготовка пакета обновления
     ///описание в XML и упаковка
     /// </summary>
-    public class XmlWriter
+    public class Wrapper
+
     {
-        public XmlWriter()
+        public Wrapper()
         {
             XDOC = new XDocument();
             ROOT = new XElement("root");
