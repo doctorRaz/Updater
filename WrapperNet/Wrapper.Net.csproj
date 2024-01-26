@@ -23,11 +23,11 @@
 		 
 		<!--атрибуты сборки-->
 		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-		<Title>Updater prep Title</Title>
-		<Product>Updater</Product>
+		<!--<Title>Updater prep Title</Title>-->
+		<Product>Wrapper</Product>
 		<Company>doctorRaz@gmail.com</Company>
 		<Authors>Разыграев Андрей</Authors>
-		<Description>Подготовка описания xml для утилиты обновления</Description>
+		<Description>Сборщик обновления</Description>
 		<Copyright>Разыграев Андрей</Copyright>
 		<Trademark>©doctorRAZ 2014-2024</Trademark>
 	
@@ -37,8 +37,8 @@
 		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 		<Deterministic>False</Deterministic>
-		<AssemblyVersion>0.0.*</AssemblyVersion>
-		<PackageId>Upd.NET</PackageId>
+		<AssemblyVersion>0.1.*</AssemblyVersion>
+		<PackageId>Wrapper.NET</PackageId>
 		<GenerateDocumentationFile>False</GenerateDocumentationFile>
 		<!--<Version />-->
 
@@ -62,6 +62,13 @@
 
 	<ItemGroup>
 		<Content Include="1001.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="DotNetZip">
+	    <HintPath>..\@resourse\lib\DotNetZip.1.16.0\lib\netstandard2.0\DotNetZip.dll</HintPath>
+	    <Private>False</Private>
+	  </Reference>
 	</ItemGroup>
 
 	<ItemGroup>

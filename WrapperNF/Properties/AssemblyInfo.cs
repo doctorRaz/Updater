@@ -7,15 +7,15 @@ using System.Windows;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набор атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("UpdatePrep.NF")]
-[assembly: AssemblyDescription("обновлятор")]
+[assembly: AssemblyTitle("Wrapper.NF")]
+[assembly: AssemblyDescription("Сборщик обновления")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("drz")]
-[assembly: AssemblyProduct("UpdatePrep")]
-[assembly: AssemblyCopyright("Copyright ©drz 2023-2024")]
-[assembly: AssemblyTrademark("®doctorRAZ")]
+[assembly: AssemblyCompany("doctorRaz@gmail.com")]
+[assembly: AssemblyProduct("Wrapper")]
+[assembly: AssemblyCopyright("Разыграев Андрей")]
+[assembly: AssemblyTrademark("©doctorRAZ 2014-2024")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyInformationalVersion("LicGen test")]
+[assembly: AssemblyInformationalVersion("Wrapper Prep info")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми
 // для компонентов COM. Если необходимо обратиться к типу в этой сборке через
@@ -52,5 +52,5 @@ using System.Windows;
 // Можно задать все значения или принять номера сборки и редакции по умолчанию 
 // используя "*", как показано ниже:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.*")]
+[assembly: AssemblyVersion("0.1.*")]
 //[assembly: AssemblyFileVersion("1.0.0.0")]

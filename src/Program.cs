@@ -1,7 +1,7 @@
 ﻿/*
 #При генерации обновления:
 
-1. К названию XML файла добавлять **minor** программы
+ ~1. К названию XML файла добавлять **minor** программы~
 2. К названию zip добавлять **minor** программы 
 >Все обновления внутри **minor** только главный модуль программы + модули имеющие _FileVersion_. 
 
@@ -20,9 +20,12 @@
    забивать имена файлов, в словарик, если дубликат, то выход с ошибкой, что дубликаты имен
   в словарик что бы пропускать одинаковые имена
 
-после распаковки пытаться положиь файлы по путям или тупо искать поиском?? если больше чем один чего делать?
+после распаковки пытаться положить файлы по путям или тупо искать поиском?? если больше чем один чего делать?
 
-
+zip
+https://www.dotnetspider.com/resources/43506-How-create-zip-file-C-NET-with-secured.aspx
+https://github.com/haf/DotNetZip.Semverd
+/zip
 
 */
 
@@ -45,12 +48,10 @@ using System.Xml.Linq;
 
 
 
-
-
 //https://learn.microsoft.com/ru-ru/dotnet/core/project-sdk/msbuild-props#assembly-attribute-properties
 #if NET
-[assembly: AssemblyInformationalVersion("Updater Prep info")]
-[assembly: AssemblyTitle("Updater Prep Title000")]
+[assembly: AssemblyInformationalVersion("Wrapper Prep info")]
+[assembly: AssemblyTitle("Wrapper Prep")]
 #endif
 
 namespace drz.UpdatePrep
@@ -67,27 +68,32 @@ namespace drz.UpdatePrep
 
             //***
 
-            Wrapper UC = new Wrapper();
+            Wrapper Wrap = new Wrapper();
 
             //! читаем свойства файлов обновления и пишем в XML
-            if (!UC.XmlPropWriter)
+            if (!Wrap.XmlFilePropWriter)
             {
-                Console.WriteLine(UC.sErr);
+                Console.WriteLine(Wrap.sErr);
                 Console.WriteLine("Press any key");
                 Console.ReadKey();
                 return;
             }
 
-            //!интересуемся нужны ли файлы пакадж
-            Utils UT = new Utils();
-            UT.sConsolMesag = "Нужно ли добавить в обновление файлы Package??";
+            //!console read
+            Utils.ConsoleRequest ConsRead = new Utils.ConsoleRequest();
+            ConsoleKey ckRes;
 
-            if (UT.ConsoleReadKey == ConsoleKey.Y)
+            //!интересуемся нужны ли файлы пакадж
+            ConsRead.sConsolMesag = "Нужно ли добавить в обновление файлы Package??";
+            ckRes = ConsRead.ConsoleReadKey;
+           
+            if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            if (ckRes == ConsoleKey.Y)
             {
                 //! читаем свойства файлов Package и пишем в XML
-                if (!UC.XmlPackageWriter)
+                if (!Wrap.XmlPackageWriter)
                 {
-                    Console.WriteLine(UC.sErr);
+                    Console.WriteLine(Wrap.sErr);
                     Console.WriteLine("Press any key");
                     Console.ReadKey();
                     return;
@@ -95,13 +101,17 @@ namespace drz.UpdatePrep
             }
 
             //!если все хорошо запросить файл описания обновки what news
-            UT.sConsolMesag = "Добавить в XML описание обновлений из файла??";
-            if (UT.ConsoleReadKey == ConsoleKey.Y)
+            ConsRead.sConsolMesag = "Добавить в XML описание обновлений из файла??";
+
+            ckRes = ConsRead.ConsoleReadKey;
+
+            if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            if (ckRes == ConsoleKey.Y)
             {
                 //!читаем описание из текстового файла в XML
-                if (!UC.XmlDescriptorWriter)
+                if (!Wrap.XmlDescriptorWriter)
                 {
-                    Console.WriteLine(UC.sErr);
+                    Console.WriteLine(Wrap.sErr);
                     Console.WriteLine("Press any key");
                     Console.ReadKey();
                     return;
@@ -109,30 +119,38 @@ namespace drz.UpdatePrep
             }
 
             //! вывести в консоль
-            UT.sConsolMesag = "НАпечатать собранный XML в консоль??";
-            if (UT.ConsoleReadKey == ConsoleKey.Y)
+            ConsRead.sConsolMesag = "НАпечатать собранный XML в консоль??";
+
+            ckRes = ConsRead.ConsoleReadKey;
+
+            if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            if (ckRes == ConsoleKey.Y)
             {
-                Console.WriteLine(UC.XDOC.ToString());
+                Console.WriteLine(Wrap.XDOC.ToString());
             }
 
+            //сохраним ZIP в метод
+            var rr = Wrap.arrFiletoZIP;
+            var sZip = Wrap.sFullNameZIP;
 
-            //think предложить упаковку файлов собранных в XML в zip с паролем
-            //выбор места сохранения файла
-            //дописать этот zip в XML
+                      
+            //дописать путь к zip в XML
+            //и др. служебную информацию
 
-            //!сохранимся
-            //think тут тоже добавить запрос сохранить по умолчанию или куда скажет юзер
-            UC.XDOC.Save(UC.sFullNameXML);
+            //!сохраним XML
+            Wrap.XDOC.Save(Wrap.sFullNameXML);
 
-            //think прибить папку в темпе
+            
 
+
+          
 
             Console.WriteLine("\tXML saved");
             Console.WriteLine("Press any key");
             Console.ReadKey();
             return;
 
-    
+
         }
 
     }

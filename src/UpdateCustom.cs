@@ -26,15 +26,23 @@ namespace drz.UpdatePrep
     public class Wrapper
 
     {
+        #region INIT CLASS
+
         public Wrapper()
         {
             XDOC = new XDocument();
             ROOT = new XElement("root");
             XDOC.Add(ROOT);//цепляем к doc
             ofd = new OpenFileDialog();
+            arrFiletoZIP = new List<string>();//пустой массив
         }
 
-        #region Пути
+        #region Пути имена
+
+        /// <summary>
+        /// Список файлов для архивации
+        /// </summary>
+        internal List<string> arrFiletoZIP { get; set; }
 
         /// <summary> директория приложения 
         /// <br> задаем один раз потом не меняем</br>
@@ -43,9 +51,49 @@ namespace drz.UpdatePrep
         internal string sDirFiles { get; set; }
 
         /// <summary>
+        /// директория над каталогом приложения
+        /// </summary>
+        internal string sDirParent { get; set; }
+
+
+        #region Product
+
+        /// <summary>
+        /// название продукта
+        /// </summary>
+        internal string sProductName { get; set; }
+
+        /// <summary>
+        /// Версия главного файла мажор.минор
+        /// </summary>
+        internal string sMajorMinorVersion
+        {
+            get
+            {
+                Version vFileVersion = new Version(sVersion);
+                //до минора версия
+                return vFileVersion.Major + "." + vFileVersion.Minor;
+            }
+        }
+
+        /// <summary>
+        /// полная версия главного файла
+        /// </summary>
+        internal string sVersion { get; set; }
+
+
+        //think при запросе на сервер приложение само собирает из своих ProductName и MajorMinorVersion и запрашивает такой файл на сервере
+        /// <summary>
+        /// имя файла для ZIP и XLS
+        /// </summary>
+        internal string sShortName => sProductName + "_" + sMajorMinorVersion;
+
+        #endregion
+
+        /// <summary>
         /// папочка куда предварительно копируем компоненты приложения
         /// </summary>
-        internal string sDirTemp { get; set; }
+        internal string sDirTempProduct { get; set; }
 
         /// <summary>файл приложения, библиотек и прочих файлов</summary>
         string sFilePrg { get; set; }
@@ -74,11 +122,27 @@ namespace drz.UpdatePrep
         XElement ROOT { get; set; }
 
         /// <summary>
+        /// расширение XML
+        /// </summary>
+        const string sXMLext = ".xmlpack";
+
+        /// <summary>
         /// Имя по умолчанию для сохранения XML
         /// </summary>
-        internal string sFullNameXML { get; set; }
+        internal string sFullNameXML => Path.Combine(sDirParent, sShortName + sXMLext);// { get; set; }
 
         #endregion
+
+        #region ZIP
+
+        /// <summary>
+        /// Имя по умолчанию для сохранения XML
+        /// </summary>
+        internal string sFullNameZIP => Path.Combine(sDirParent, sShortName + ".zip");// { get; set; }
+
+        #endregion
+
+
 
         #region OFD
 
@@ -101,14 +165,16 @@ namespace drz.UpdatePrep
                     "*.pdb",
                     "*.json",
                     "*.package",
-                    "*.packagedescription"
+                    sXMLext
                 };
             }
         }
 
         #endregion
 
+        #endregion
         //***R
+        #region DescriptorWriter
 
         /// <summary>
         /// писатель обновления, что нового
@@ -127,9 +193,12 @@ namespace drz.UpdatePrep
                 return true;
             }
         }
+        #endregion
+
+        #region PackageWriter
 
         /// <summary>
-        /// писатель свойств пакадже
+        /// писатель свойств пакадже /загрузчик приложения/
         /// </summary>
         internal bool XmlPackageWriter
         {
@@ -173,16 +242,24 @@ namespace drz.UpdatePrep
                     Package.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
 #endif
                     Package.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
+
+                    //! список файлов для упаковки
+                    arrFiletoZIP.Add(sFilePrg);
                 }
 
                 return true;
             }
         }
 
+        #endregion
+
+
+        #region FilePropWriter
+
         /// <summary>
         ////писатель свойств файлов
         /// </summary>
-        internal bool XmlPropWriter
+        internal bool XmlFilePropWriter
         {//think растащить все по классам
             get
             {
@@ -223,41 +300,49 @@ namespace drz.UpdatePrep
 
                 #endregion
 
-                //фильтр исключаемых масок
-                string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
 
-                //!+ корневая директория приложения /прибита гвоздями/
+                #region Set general properties /прибито гвоздями/
+
+                //!+ корневая директория приложения
                 sDirFiles = Directory.GetParent(sFilePrg).FullName;
 
+                //!+директория над каталогом приложения
+                sDirParent = Directory.GetParent(sDirFiles).FullName;
+
+                //!+продукт 
+                sProductName = versionInfPrj.ProductName.ToLower();
+
+                //!+полная версия файла
+                sVersion = versionInfPrj.FileVersion;
+
+                //Version vFileVersion = new Version(sVersion);
+
+                ////до минора версия
+                //sMajorMinorVersion = vFileVersion.Major + "." + vFileVersion.Minor;
+
+                ////!полное имя XML 
+                //sFullNameXML = Path.Combine(sDirParent, sShortName + sXMLext);           
+
+                ////!полное имя zip 
+                //sFullNameZIP = Path.Combine(sDirParent, sShortName + ".zip");
+
+                //радуем юзера, что пошли формировать XML
+                Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
+                Console.WriteLine(sFullNameXML);
 
 
-
-                #region XML file name      
-                //директория XML над каталогом приложения
-                string sDirParent = Directory.GetParent(sDirFiles).FullName;
-
-                string sProductName = versionInfPrj.ProductName;
-                //до минора версия
-                Version vFileVersion = new Version(versionInfPrj.FileVersion);
-
-                string sMinorVersion = vFileVersion.Major + "." + vFileVersion.Minor;
-
-                //имя файла XML
-                string sShortNameXML = sProductName + "_" + sMinorVersion + ".packagedescription";//.xml";//? имя приложения PlotSPDS
-
-                //!полный путь к XML 
-                sFullNameXML = Path.Combine(sDirParent, sShortNameXML);
 
                 #endregion
+
+
                 //***
 
-                //? проверить есть ли папочка в темпе, если есть прибить и создать по новой, не забыть по окончании опять прибить,
-                //? подсмотреть в печати
+                //x проверить есть ли папочка в темпе, если есть прибить и создать по новой, не забыть по окончании опять прибить,
+
                 //собираем путь папочки  темпе
                 //темп продукт минор
-                string sDirTemp = Path.GetTempPath();
-                string sDirFolderTmp = Path.Combine(Path.GetTempPath(), sProductName + "_" + sMinorVersion);
-                bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
+                //string sDirFolderTmp = Path.Combine(Path.GetTempPath(), sProductName + "_" + sMajorMinorVersion);
+                //bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
 
                 #region Header XML
 
@@ -271,9 +356,10 @@ namespace drz.UpdatePrep
                 XElement Modules = new XElement("Modules");
                 ROOT.Add(Modules);
 
-
-
                 #endregion
+
+                //фильтр исключаемых масок
+                string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
 
                 //пошли перебирать файлы
                 foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
@@ -334,11 +420,15 @@ namespace drz.UpdatePrep
 
                         #endregion
                     }
+                    //! список файлов для упаковки
+                    arrFiletoZIP.Add(sFilePrg);
                 }
                 Debug.WriteLine(XDOC.ToString());
                 return true;
             }
         }
+
+        #endregion
     }
 
 

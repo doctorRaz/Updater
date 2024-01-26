@@ -9,8 +9,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-using Xunit;
-
 namespace System.IO
 {
     //!+Рабочий вариант
@@ -292,6 +290,8 @@ namespace System.IO
             => path.Length > 0 && IsDirectorySeparator(path[path.Length - 1]);
     }
 
+
+     /*
     /// <summary> Tests for PathNetCore.GetRelativePath </summary>
     public static class GetRelativePathTests
     {
@@ -329,6 +329,8 @@ namespace System.IO
         [InlineData(@"C:\a", @"C:\ab", @"..\ab")]
         [InlineData(@"C:\", @"\\LOCALHOST\Share\b", @"\\LOCALHOST\Share\b")]
         [InlineData(@"\\LOCALHOST\Share\a", @"\\LOCALHOST\Share\b", @"..\b")]
+
+     
         //[PlatformSpecific(TestPlatforms.Windows)]  // Tests Windows-specific paths
         public static void GetRelativePath_Windows(string relativeTo, string path, string expected)
         {
@@ -345,4 +347,5 @@ namespace System.IO
                 ignoreWhiteSpaceDifferences: false);
         }
     }
+    */
 }
