@@ -27,7 +27,15 @@ https://www.dotnetspider.com/resources/43506-How-create-zip-file-C-NET-with-secu
 https://github.com/haf/DotNetZip.Semverd
 /zip
 
+
+/*
+обновлятор обновляет с конца, главный файл обновлять последним
+главный файл по версии признак, что нужно обновление
+либо файл пустышку dll чтоб с нее считывать версию
+
 */
+
+
 
 //***
 using drz.Updater;
@@ -129,7 +137,7 @@ namespace drz.UpdatePrep
                 Console.WriteLine(Wrap.XDOC.ToString());
             }
 
-            //сохраним ZIP в метод
+            //сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
             var rr = Wrap.arrFiletoZIP;
             var sZip = Wrap.sFullNameZIP;
 

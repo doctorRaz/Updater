@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wrapper.Net", "WrapperNet\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wrapper.NF", "WrapperNF\Wrapper.NF.csproj", "{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialize test", "Serialize test\Serialize test.csproj", "{F114EF09-EC63-4295-B993-930A56840A53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,10 @@ Global
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F114EF09-EC63-4295-B993-930A56840A53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F114EF09-EC63-4295-B993-930A56840A53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F114EF09-EC63-4295-B993-930A56840A53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F114EF09-EC63-4295-B993-930A56840A53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

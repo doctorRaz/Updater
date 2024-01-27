@@ -18,9 +18,9 @@
 		<IsPublishable>False</IsPublishable>
 
 		<ApplicationIcon>1001.ico</ApplicationIcon>
-		
+
 		<!--https://learn.microsoft.com/ru-ru/dotnet/core/project-sdk/msbuild-props#assembly-attribute-properties-->
-		 
+
 		<!--атрибуты сборки-->
 		<GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
 		<!--<Title>Updater prep Title</Title>-->
@@ -30,7 +30,7 @@
 		<Description>Сборщик обновления</Description>
 		<Copyright>Разыграев Андрей</Copyright>
 		<Trademark>©doctorRAZ 2014-2024</Trademark>
-	
+
 		<!--атрибуты сборки-->
 
 		<!--<Version />-->
@@ -46,18 +46,27 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-	  <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-	  <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Include="..\src\Extensions.cs" Link="Extensions.cs" />
-	  <Compile Include="..\src\Program.cs" Link="Program.cs" />
-	  <Compile Include="..\src\UpdateCustom.cs" Link="UpdateCustom.cs" />
-	  <Compile Include="..\src\Utils.cs" Link="Utils.cs" />
+		<Compile Include="..\src\Wrapper\ApplyWrap.cs" Link="src\Wrapper\ApplyWrap.cs" />
+		<Compile Include="..\src\Wrapper\Wrapper_Utils.cs" Link="src\Wrapper\Wrapper_Utils.cs" />
+		<Compile Include="..\src\Wrapper\Wrapper_FileProp.cs" Link="src\Wrapper\Wrapper_FileProp.cs" />
+		<Compile Include="..\src\Wrapper\Wrapper_Package.cs" Link="src\Wrapper\Wrapper_Package.cs" />
+		<Compile Include="..\src\Wrapper\Wrapper_Description.cs" Link="src\Wrapper\Wrapper_Description.cs" />
+		<Compile Include="..\src\Wrapper\Wrapper_INIT.cs" Link="src\Wrapper\Wrapper_INIT.cs"/>
+		<!--common-->
+		<Compile Include="..\src\Common\Extensions.cs" Link="src\Common\Extensions.cs" />
+		<Compile Include="..\src\Common\XML_Serialize.cs" Link="src\Common\XML_Serialize.cs" />
+
+
+		<!--common-->
+
 	</ItemGroup>
 
 	<ItemGroup>
@@ -65,25 +74,25 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="DotNetZip">
-	    <HintPath>..\@resourse\lib\DotNetZip.1.16.0\lib\netstandard2.0\DotNetZip.dll</HintPath>
-	    <Private>False</Private>
-	  </Reference>
+		<Reference Include="DotNetZip">
+			<HintPath>..\@resourse\lib\DotNetZip.1.16.0\lib\netstandard2.0\DotNetZip.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>Resources.resx</DependentUpon>
-	  </Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Resources.resx</DependentUpon>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>
