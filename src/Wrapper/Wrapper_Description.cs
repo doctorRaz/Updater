@@ -39,7 +39,7 @@ namespace drz.UpdatePrep
 
                 //!Descriptions
                 XElement Descriptions = new XElement("Descriptions");
-                ROOT.Add(Descriptions);
+                //ROOT.Add(Descriptions);
 
 
                 return true;

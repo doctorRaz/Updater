@@ -6,82 +6,188 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace drz.Serialize_test
+namespace drz.XMLSerialize
 {
 
-    // Примечание. Для запуска созданного кода может потребоваться NET Framework версии 4.5 или более поздней версии и .NET Core или Standard версии 2.0 или более поздней.
-    /// <remarks/>
+    /// <summary>
+    /// Корень XML
+    /// </summary>
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     [XmlRoot(Namespace = "", IsNullable = false)]
     public partial class root
     {
-        /// <remarks/>
         [XmlArrayItem("Project", IsNullable = false)]
         public List<rootProject> Projects;
 
-        /// <remarks/>
         [XmlArrayItem("Module", IsNullable = false)]
         public List<rootModule> Modules;
 
-        /// <remarks/>
+
+        /// <summary>
+        /// Чисто для отладки потом изменить
+        /// </summary>
         [XmlAttribute()]
         public ushort Date;
 
-        /// <remarks/>
+        /// <summary>
+        /// Тестовое свойство
+        /// </summary>
         [XmlAttribute()]
         public string test;
-        
+
+        /// <summary>
+        /// тестовое значение
+        /// </summary>
+        [XmlText()]
+        public string Value;
+
     }
 
-    /// <remarks/>
+    /// <summary>
+    /// Класс свойств проекта (все файлы которые имеют FileVersion)
+    /// </summary>
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     public partial class rootProject
+
     {
-        /// <remarks/>
+        /// <summary>
+        /// The value
+        /// </summary>
+        [XmlText()]
+        public string Project;
+
+        /// <summary>
+        /// The reference path
+        /// </summary>
         [XmlAttribute()]
         public string RefPath;
 
-
-        /// <remarks/>
+        /// <summary>
+        /// The file name
+        /// </summary>
         [XmlAttribute()]
         public string FileName;
 
-        /// <remarks/>
+        /// <summary>
+        /// The product name/
+        /// </summary>
+        [XmlAttribute()]
+        public string ProductName;
+
+        /// <summary>
+        /// The file description/
+        /// </summary>
+        [XmlAttribute()]
+        public string FileDescription;
+
+        /// <summary>
+        /// The original filename
+        /// </summary>
+        [XmlAttribute()]
+        public string OriginalFilename;
+
+        /// <summary>
+        /// The internal name
+        /// </summary>
+        [XmlAttribute()]
+        public string InternalName;
+
+        /// <summary>
+        /// The version
+        /// </summary>
+        [XmlAttribute()]
+        public string FileVersion;
+
+        /// <summary>
+        /// The product version
+        /// </summary>
+        [XmlAttribute()]
+        public string ProductVersion;
+
+        /// <summary>
+        /// The legal trademarks
+        /// </summary>
+        [XmlAttribute()]
+        public string LegalTrademarks;
+
+        /// <summary>
+        /// The legal copyright
+        /// </summary>
+        [XmlAttribute()]
+        public string LegalCopyright;
+
+        [XmlAttribute()]
+        public string CompanyName;
+
+        [XmlAttribute()]
+        public string Comments;
+
+        /// <summary>
+        /// The root начальный файл проекта
+        /// </summary>
         [XmlAttribute()]
         public bool root;
 
-        [XmlAttribute()]
-        public string Version;
-
-        /// <remarks/>
-        [XmlText()]
-        public string Value; 
-
-
     }
 
-    /// <remarks/>
+    /// <summary>
+    /// Свойства файлов проекта не имеющие FileVersion
+    /// </summary>
     [Serializable()]
     [System.ComponentModel.DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     public partial class rootModule
     {
-
-        /// <remarks/>
+        /// <summary>
+        /// The reference path, относительно главного файла проекта (корень каталога проекта)
+        /// </summary>
         [XmlAttribute()]
         public string RefPath;
 
-
-        /// <remarks/>
+        /// <summary>
+        /// The file name
+        /// </summary>
         [XmlAttribute()]
         public string FileName;
 
     }
 
+    /// <summary>
+    /// Свойства файлов package
+    /// </summary>
+    [Serializable()]
+    [System.ComponentModel.DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+    public partial class rootPackage
+    {
+        /// <summary>
+        /// The reference path, относительно главного файла проекта (корень каталога проекта)
+        /// </summary>
+        [XmlAttribute()]
+        public string RefPath;
 
+        /// <summary>
+        /// The file name
+        /// </summary>
+        [XmlAttribute()]
+        public string FileName;
+    }
+
+
+    /// <summary>
+    /// Описание обновления
+    /// </summary>
+    [Serializable()]
+    [System.ComponentModel.DesignerCategory("code")]
+    [XmlType(AnonymousType = true)]
+
+    public partial class rootDescription
+    {
+
+    }
 
 }

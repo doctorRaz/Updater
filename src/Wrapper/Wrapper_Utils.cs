@@ -41,8 +41,8 @@ namespace drz.Updater
                     ConsoleKey response;
                     do
                     {
-                        Console.Write(sConsolMesag + " [" + sConsoleKeyY + "/" + sConsoleKeyN + "], " + sConsoleKeyEsc + " - Quit");
-                        response = Console.ReadKey(/*false*/).Key;   // true is intercept key (dont show), false is show
+                        Console.Write(sConsolMesag + " [" + sConsoleKeyY + "/" + sConsoleKeyN + "], " + sConsoleKeyEsc + " - Quit: ");
+                        response = Console.ReadKey(false).Key;   // true is intercept key (dont show), false is show
                         if (response != ConsoleKey.Enter)
                             Console.WriteLine();
 

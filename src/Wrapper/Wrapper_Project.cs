@@ -1,4 +1,5 @@
 ﻿using drz.Updater;
+using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
@@ -26,18 +27,18 @@ namespace drz.UpdatePrep
     public partial class Wrapper
 
     {
-                #region FilePropWriter
+        #region FilePropWriter
 
         /// <summary>
         ////писатель свойств файлов
         /// </summary>
         internal bool XmlFilePropWriter
-        {//think растащить все по классам
+        {
             get
             {
                 #region OFD Prop
-                ofd.Multiselect = false;
-                ofd.Title = "Выбери главный файл проекта";
+                ofd.Multiselect = true;
+                ofd.Title = "Выбери главные файлы проекта";
                 ofd.Filter = "Все файлы (*.*)|*.*|"
                              + ".NET assemblies (*.exe;*.dll)|"
                              + "*.exe;*.dll";
@@ -99,6 +100,7 @@ namespace drz.UpdatePrep
                 //sFullNameZIP = Path.Combine(sDirParent, sShortName + ".zip");
 
                 //радуем юзера, что пошли формировать XML
+
                 Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
                 Console.WriteLine(sFullNameXML);
 
@@ -116,22 +118,25 @@ namespace drz.UpdatePrep
                 //string sDirFolderTmp = Path.Combine(Path.GetTempPath(), sProductName + "_" + sMajorMinorVersion);
                 //bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
 
-                #region Header XML
+                #region Header root
 
                 //think возможно надо добавить дату и прочие служебные данные
 
-                //!Projects
-                XElement Projects = new XElement("Projects");
-                ROOT.Add(Projects);
+                ////!Projects
+                //XElement Projects = new XElement("Projects");
+                //ROOT.Add(Projects);
 
-                //!Modules
-                XElement Modules = new XElement("Modules");
-                ROOT.Add(Modules);
+                ////!Modules
+                //XElement Modules = new XElement("Modules");
+                //ROOT.Add(Modules);
 
                 #endregion
 
                 //фильтр исключаемых масок
                 string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
+
+
+
 
                 //пошли перебирать файлы
                 foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
@@ -143,66 +148,72 @@ namespace drz.UpdatePrep
                     //!+ если файл имеет FileVersion то в Project иначе в модули
                     if (!string.IsNullOrEmpty(versionInfPrj.FileVersion))
                     {
-                        #region Projects
-                        XElement Project = new XElement("Project", versionInfPrj.FileDescription);
+
+
+                        #region Project
+
+                        rootProject Project = new rootProject
+                        {
+                            Project = versionInfPrj.FileDescription,
+
+                            //! атрибуты пока тянем все подряд из доступных
+#if NF
+                            RefPath = PathNetCore.GetRelativePath(sDirFiles, sFilePrg),//NF не умеет GetRelativePath
+#else
+                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),//think NF не умеет GetRelativePath
+#endif
+                            FileName = Path.GetFileName(sFilePrg),
+                            ProductName = versionInfPrj.ProductName,
+                            FileDescription = versionInfPrj.FileDescription,
+                            OriginalFilename = versionInfPrj.OriginalFilename,
+                            InternalName = versionInfPrj.InternalName,
+                            FileVersion = versionInfPrj.FileVersion,
+                            ProductVersion = versionInfPrj.ProductVersion,
+                            LegalTrademarks = versionInfPrj.LegalTrademarks,
+                            LegalCopyright = versionInfPrj.LegalCopyright,
+                            CompanyName = versionInfPrj.CompanyName,
+                            Comments = versionInfPrj.Comments,
+
+                        };
+                        //добавим к роот, потом модно менять свойства этого экземпляра , в этом цикле
                         Projects.Add(Project);
 
-                        //! атрибуты пока тянем все подряд из доступных
-#if NF
-                        Project.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//NF не умеет GetRelativePath
-#else
-                        Project.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));//think NF не умеет GetRelativePath
-#endif
-                        Project.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
-                        Project.Add(new XAttribute("ProductName", versionInfPrj.ProductName));
-                        Project.Add(new XAttribute("FileDescription", versionInfPrj.FileDescription));
-                        Project.Add(new XAttribute("OriginalFilename", versionInfPrj.OriginalFilename));
-                        Project.Add(new XAttribute("InternalName", versionInfPrj.InternalName));
-                        Project.Add(new XAttribute("FileVersion", versionInfPrj.FileVersion));
-                        Project.Add(new XAttribute("ProductVersion", versionInfPrj.ProductVersion));
-                        Project.Add(new XAttribute("LegalTrademarks", versionInfPrj.LegalTrademarks));
-                        Project.Add(new XAttribute("LegalCopyright", versionInfPrj.LegalCopyright));
-                        //Project.Add(new XAttribute("CompanyName", versionInfPrj.CompanyName));
-                        //Project.Add(new XAttribute("Comments", versionInfPrj.Comments));
-
-                        //!если файл выбранного проекта
+                        //!если файл выбран разработчиком проекта
                         if (sFilePrgs.Contains(file))
                         {
-                            //признак, что файл в корне каталога и был выбран разработчиком
-                            Project.Add(new XAttribute("root", true));
+                            //признак, что файл в корне каталога и был выбран разработчиком, пока не знаю нафига
+                            Project.root = true;
                         }
                         else
                         {
-                            Project.Add(new XAttribute("root", false));
+                            Project.root = false;
                         }
                         #endregion
                     }
                     else
                     {
                         #region Module
-
-                        XElement Module = new XElement("Module"/*, versionInfoMod.ProductName*/);
-                        Modules.Add(Module);
+                        rootModule Module = new rootModule
+                        {
 #if NF
-                        Module.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+                            RefPath = PathNetCore.GetRelativePath(sDirFiles, sFilePrg),//заглушка для фрэмворка, относительный путь
 #else
-                        Module.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),
 #endif
-                        Module.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
-
+                            FileName = Path.GetFileName(sFilePrg),
+                        };
+                        Modules.Add(Module);
                         #endregion
                     }
-                    //! список файлов для упаковки
+                    //! список вех файлов для упаковки
                     arrFiletoZIP.Add(sFilePrg);
                 }
-                Debug.WriteLine(XDOC.ToString());
+                //Debug.WriteLine(XDOC.ToString());
                 return true;
             }
         }
 
         #endregion
-
-
     }
 }
 

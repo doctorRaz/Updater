@@ -66,13 +66,13 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="..\src\Wrapper\ApplyWrap.cs">
-			<Link>ApplyWrap.cs</Link>
+			<Link>src\Wrapper\ApplyWrap.cs</Link>
 		</Compile>
 		<Compile Include="..\src\Wrapper\Wrapper_Utils.cs">
 			<Link>src\Wrapper\Wrapper_Utils.cs</Link>
 		</Compile>
-		<Compile Include="..\src\Wrapper\Wrapper_FileProp.cs">
-			<Link>src\Wrapper\Wrapper_FileProp.cs</Link>
+		<Compile Include="..\src\Wrapper\Wrapper_Project.cs">
+			<Link>src\Wrapper\Wrapper_Project.cs</Link>
 		</Compile>
 		
 		<Compile Include="..\src\Wrapper\Wrapper_Package.cs">

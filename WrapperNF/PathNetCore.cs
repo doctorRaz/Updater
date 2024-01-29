@@ -13,12 +13,11 @@ namespace System.IO
 {
     //!+Рабочий вариант
 
-    // Provides methods for processing file system strings in a cross-platform manner.
-    // Most of the methods don't do a complete parsing (such as examining a UNC hostname), 
-    // but they will handle most string operations.
+     /// <summary>
+    /// Provides methods for processing file system strings in a cross-platform manner. Most of the methods don't do a complete parsing (such as examining a UNC hostname), but they will handle most string operations.
+    /// </summary>
     public static class PathNetCore
     {
-
         /// <summary>
         /// Create a relative path from one path to another. Paths will be resolved before calculating the difference.
         /// Default path comparison for the active platform will be used (OrdinalIgnoreCase for Windows or Mac, Ordinal for Unix).

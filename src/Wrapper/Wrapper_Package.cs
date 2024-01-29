@@ -58,7 +58,7 @@ namespace drz.UpdatePrep
 
                 //!Packages
                 XElement Packages = new XElement("Packages");
-                ROOT.Add(Packages);
+                //ROOT.Add(Packages);
 
                 foreach (string fil in sFilePrgs)
                 {

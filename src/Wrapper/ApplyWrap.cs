@@ -1,4 +1,19 @@
 ﻿/*
+Правитть апли врап 
+1. добавить настройки:
+* список игнорируемых расширений
+* список включаемых расширений
+~переделать хмл на серилизацию, добавить полей с запасом~
+добавить класс описания обновения
+добавить класс пути имени zip
+добавить упаковщик
+------
+писать скачивалку
+проверятель 
+распаковщик
+заменятель файлов
+
+
 #При генерации обновления:
 
  ~1. К названию XML файла добавлять **minor** программы~
@@ -39,6 +54,7 @@ https://github.com/haf/DotNetZip.Semverd
 
 //***
 using drz.Updater;
+using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
@@ -53,6 +69,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 
 
 
@@ -64,6 +81,8 @@ using System.Xml.Linq;
 
 namespace drz.UpdatePrep
 {
+
+
     public static class Command
     {
         /// <summary>
@@ -73,10 +92,26 @@ namespace drz.UpdatePrep
         public static void Main(string[] args)
         {
 
+            /* понты  
+            // Demonstrate all colors and backgrounds.
+            Type type = typeof(ConsoleColor);
+            Console.ForegroundColor = ConsoleColor.White;
+            foreach (var name in Enum.GetNames(type))
+            {
+                Console.BackgroundColor = (ConsoleColor)Enum.Parse(type, name);
+                Console.WriteLine(name);
+            }
+            Console.BackgroundColor = ConsoleColor.Black;
+            foreach (var name in Enum.GetNames(type))
+            {
+                Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, name);
+                Console.WriteLine(name);
+            }
+        */
 
-            //***
+        //***
 
-            Wrapper Wrap = new Wrapper();
+        Wrapper Wrap = new Wrapper();
 
             //! читаем свойства файлов обновления и пишем в XML
             if (!Wrap.XmlFilePropWriter)
@@ -126,32 +161,40 @@ namespace drz.UpdatePrep
                 }
             }
 
-            //! вывести в консоль
-            ConsRead.sConsolMesag = "НАпечатать собранный XML в консоль??";
+            //BUG не работает
+            //x вывести в консоль
+            //ConsRead.sConsolMesag = "НАпечатать собранный XML в консоль??";
 
-            ckRes = ConsRead.ConsoleReadKey;
+            //ckRes = ConsRead.ConsoleReadKey;
+            //if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            //if (ckRes == ConsoleKey.Y)
+            //{
+            //    var xxx = Wrap.ROOT;
+            //    Console.WriteLine(Wrap.ROOT.ToString());
+            //}
 
-            if (ckRes == ConsoleKey.Escape) return; //esc =quit
-            if (ckRes == ConsoleKey.Y)
-            {
-                Console.WriteLine(Wrap.XDOC.ToString());
-            }
-
-            //сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
+            //?сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
             var rr = Wrap.arrFiletoZIP;
             var sZip = Wrap.sFullNameZIP;
 
                       
-            //дописать путь к zip в XML
+            //?дописать путь к zip в XML
             //и др. служебную информацию
 
-            //!сохраним XML
-            Wrap.XDOC.Save(Wrap.sFullNameXML);
-
-            
+            //x Wrap.XDOC.Save(Wrap.sFullNameXML);
 
 
-          
+            //!сохраним в файл
+            XmlSerializer xms  = new XmlSerializer(typeof(root));
+                  
+            if (File.Exists(Wrap.sFullNameXML)) File.Delete(Wrap.sFullNameXML);
+
+            using (FileStream fs = new FileStream(Wrap.sFullNameXML, FileMode.OpenOrCreate))
+            {
+                xms.Serialize(fs, Wrap.ROOT);
+            }
+
+
 
             Console.WriteLine("\tXML saved");
             Console.WriteLine("Press any key");

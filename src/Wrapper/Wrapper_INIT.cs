@@ -1,4 +1,5 @@
 ﻿using drz.Updater;
+using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,50 @@ namespace drz.UpdatePrep
 
         public Wrapper()
         {
-            XDOC = new XDocument();
-            ROOT = new XElement("root");
-            XDOC.Add(ROOT);//цепляем к doc
+            ROOT = new root();
+            //модуль проектов
+            Projects = new List<rootProject>();
+            //пристегиваем к рут
+            ROOT.Projects = Projects;
+
+            //модуль прочих файлов
+            Modules = new List<rootModule>();
+            //пристегиваем к рут
+            ROOT.Modules = Modules;
+
+            Description = new List<rootDescription>();
+
+            //x прибить XML
+            //XDOC = new XDocument();
+            //ROOT = new XElement("root");
+            //XDOC.Add(ROOT);//цепляем к doc
             ofd = new OpenFileDialog();
             arrFiletoZIP = new List<string>();//пустой массив
         }
+
+        #region Serialization
+
+        /// <summary>
+        /// корень коллекции
+        /// </summary>
+       public root ROOT { get; set; }
+
+        /// <summary>
+        /// The projects
+        /// </summary>
+        List<rootProject> Projects;
+
+        /// <summary>
+        /// The modules
+        /// </summary>
+        List<rootModule> Modules;
+
+        /// <summary>
+        /// The description
+        /// </summary>
+        List<rootDescription> Description;
+
+        #endregion
 
         #region Пути имена
 
@@ -103,7 +142,7 @@ namespace drz.UpdatePrep
 
         #endregion
 
-        /// <summary>инфа о файле проекта </summary>        
+        /// <summary>информация о файле проекта </summary>        
         FileVersionInfo versionInfPrj => FileVersionInfo.GetVersionInfo(sFilePrg);
 
         /// <summary>Сообщения о ошибках</summary>
@@ -114,12 +153,7 @@ namespace drz.UpdatePrep
         /// <summary>
         /// XMLdoc
         /// </summary>
-        internal XDocument XDOC { get; set; }
-
-        /// <summary>
-        /// root
-        /// </summary>
-        XElement ROOT { get; set; }
+        //x internal XDocument XDOC { get; set; }
 
         /// <summary>
         /// расширение XML
