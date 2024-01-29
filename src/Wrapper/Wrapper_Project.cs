@@ -18,7 +18,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 
-namespace drz.UpdatePrep
+namespace drz.Updater
 {
     /// <summary>
     ///Подготовка пакета обновления
@@ -30,9 +30,12 @@ namespace drz.UpdatePrep
         #region FilePropWriter
 
         /// <summary>
-        ////писатель свойств файлов
+        /// Gets a value indicating whether [wrapper PRJ or modules].
         /// </summary>
-        internal bool XmlFilePropWriter
+        /// <value>
+        ///   <c>true</c> if [wrapper PRJ or modules]; otherwise, <c>false</c>.
+        /// </value>
+        internal bool WrapperProjectAndModules
         {
             get
             {
@@ -48,7 +51,7 @@ namespace drz.UpdatePrep
                 //!получим файлы приложения            
                 if (ofd.ShowDialog() != DialogResult.OK)
                 {
-                    sErr = "Файл DLL не загружен!\nПользователь отказался!";
+                    sErr = "Файл DLL не загружен! Пользователь отказался!";
                     return false;
                 }
                 sFilePrgs = ofd.FileNames;
@@ -111,26 +114,7 @@ namespace drz.UpdatePrep
 
                 //***
 
-                //x проверить есть ли папочка в темпе, если есть прибить и создать по новой, не забыть по окончании опять прибить,
-
-                //собираем путь папочки  темпе
-                //темп продукт минор
-                //string sDirFolderTmp = Path.Combine(Path.GetTempPath(), sProductName + "_" + sMajorMinorVersion);
-                //bool isExistDirFolderTmp = Directory.Exists(sDirFolderTmp);
-
-                #region Header root
-
-                //think возможно надо добавить дату и прочие служебные данные
-
-                ////!Projects
-                //XElement Projects = new XElement("Projects");
-                //ROOT.Add(Projects);
-
-                ////!Modules
-                //XElement Modules = new XElement("Modules");
-                //ROOT.Add(Modules);
-
-                #endregion
+                
 
                 //фильтр исключаемых масок
                 string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
@@ -140,8 +124,7 @@ namespace drz.UpdatePrep
 
                 //пошли перебирать файлы
                 foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
-                {
-                    //think возможно здесь же их собирать в темп/имя приложения для архивации
+                {                   
 
                     sFilePrg = file;
 
@@ -160,7 +143,7 @@ namespace drz.UpdatePrep
 #if NF
                             RefPath = PathNetCore.GetRelativePath(sDirFiles, sFilePrg),//NF не умеет GetRelativePath
 #else
-                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),//think NF не умеет GetRelativePath
+                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),//! NF не умеет GetRelativePath
 #endif
                             FileName = Path.GetFileName(sFilePrg),
                             ProductName = versionInfPrj.ProductName,
@@ -169,15 +152,15 @@ namespace drz.UpdatePrep
                             InternalName = versionInfPrj.InternalName,
                             FileVersion = versionInfPrj.FileVersion,
                             ProductVersion = versionInfPrj.ProductVersion,
-                            LegalTrademarks = versionInfPrj.LegalTrademarks,
-                            LegalCopyright = versionInfPrj.LegalCopyright,
-                            CompanyName = versionInfPrj.CompanyName,
-                            Comments = versionInfPrj.Comments,
+                            //LegalTrademarks = versionInfPrj.LegalTrademarks,
+                            //LegalCopyright = versionInfPrj.LegalCopyright,
+                            //CompanyName = versionInfPrj.CompanyName,
+                            //Comments = versionInfPrj.Comments,
 
                         };
-                        //добавим к роот, потом модно менять свойства этого экземпляра , в этом цикле
+                        //добавим к роот
                         Projects.Add(Project);
-
+                        
                         //!если файл выбран разработчиком проекта
                         if (sFilePrgs.Contains(file))
                         {
@@ -208,7 +191,7 @@ namespace drz.UpdatePrep
                     //! список вех файлов для упаковки
                     arrFiletoZIP.Add(sFilePrg);
                 }
-                //Debug.WriteLine(XDOC.ToString());
+            
                 return true;
             }
         }

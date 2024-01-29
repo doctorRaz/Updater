@@ -18,7 +18,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 
-namespace drz.UpdatePrep
+namespace drz.Updater
 {
     /// <summary>
     ///Подготовка пакета обновления
@@ -29,25 +29,32 @@ namespace drz.UpdatePrep
     {
         #region INIT CLASS
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Wrapper"/> class.
+        /// </summary>
         public Wrapper()
         {
             ROOT = new root();
-            //модуль проектов
+            //!модуль проектов
             Projects = new List<rootProject>();
             //пристегиваем к рут
             ROOT.Projects = Projects;
 
-            //модуль прочих файлов
+            //!модуль прочих файлов
             Modules = new List<rootModule>();
             //пристегиваем к рут
             ROOT.Modules = Modules;
 
-            Description = new List<rootDescription>();
+            //!package
+            Packages = new List<rootPackage>();
+            //пристегиваем к рут
+            ROOT.Packages = Packages;
 
-            //x прибить XML
-            //XDOC = new XDocument();
-            //ROOT = new XElement("root");
-            //XDOC.Add(ROOT);//цепляем к doc
+            //!описание
+            Description = new List<rootDescription>();
+            //пристегиваем
+            ROOT.Descriptions = Description;
+                       
             ofd = new OpenFileDialog();
             arrFiletoZIP = new List<string>();//пустой массив
         }
@@ -68,6 +75,11 @@ namespace drz.UpdatePrep
         /// The modules
         /// </summary>
         List<rootModule> Modules;
+
+        /// <summary>
+        /// The package
+        /// </summary>
+        List<rootPackage> Packages;
 
         /// <summary>
         /// The description
@@ -149,12 +161,7 @@ namespace drz.UpdatePrep
         internal string sErr { get; set; }
 
         #region XML
-
-        /// <summary>
-        /// XMLdoc
-        /// </summary>
-        //x internal XDocument XDOC { get; set; }
-
+        
         /// <summary>
         /// расширение XML
         /// </summary>
@@ -187,6 +194,7 @@ namespace drz.UpdatePrep
         #endregion
 
         #region Маски исключений
+       /// <summary>
         /// Маски исключений файлов, которые не брать
         /// </summary>
         List<string> arrExcludedSupportedExt

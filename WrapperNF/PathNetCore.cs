@@ -119,9 +119,25 @@ namespace System.IO
 
         // Public static readonly variant of the separators. The Path implementation itself is using
         // internal const variant of the separators for better performance.
+
+        /// <summary>
+        /// The directory separator character
+        /// </summary>
         public static readonly char DirectorySeparatorChar = PathInternalNetCore.DirectorySeparatorChar;
+
+        /// <summary>
+        /// The alt directory separator character
+        /// </summary>
         public static readonly char AltDirectorySeparatorChar = PathInternalNetCore.AltDirectorySeparatorChar;
+
+        /// <summary>
+        /// The volume separator character
+        /// </summary>
         public static readonly char VolumeSeparatorChar = PathInternalNetCore.VolumeSeparatorChar;
+
+        /// <summary>
+        /// The path separator
+        /// </summary>
         public static readonly char PathSeparator = PathInternalNetCore.PathSeparator;
 
         /// <summary>Returns a comparison that can be used to compare file and directory names for equality.</summary>

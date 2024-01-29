@@ -18,30 +18,47 @@ namespace drz.XMLSerialize
     [XmlRoot(Namespace = "", IsNullable = false)]
     public partial class root
     {
+        /// <summary>
+        /// The projects
+        /// </summary>
         [XmlArrayItem("Project", IsNullable = false)]
         public List<rootProject> Projects;
 
+        /// <summary>
+        /// The modules
+        /// </summary>
         [XmlArrayItem("Module", IsNullable = false)]
         public List<rootModule> Modules;
 
+        /// <summary>
+        /// The packages
+        /// </summary>
+        [XmlArrayItem("Package", IsNullable = false)]
+        public List<rootPackage> Packages;
+
+        /// <summary>
+        /// The descriptions
+        /// </summary>
+        [XmlArrayItem("Description", IsNullable = false)]
+        public List<rootDescription> Descriptions;
 
         /// <summary>
         /// Чисто для отладки потом изменить
         /// </summary>
         [XmlAttribute()]
-        public ushort Date;
-
+        public ushort DateCreate;
+   
         /// <summary>
-        /// Тестовое свойство
+        /// только имя и расширение zip файла /будет лежать рядом с XML
         /// </summary>
         [XmlAttribute()]
-        public string test;
+        public string FileNameZIP;
 
         /// <summary>
-        /// тестовое значение
+        /// на всякий
         /// </summary>
         [XmlText()]
-        public string Value;
+        public string Val;
 
     }
 
@@ -55,7 +72,7 @@ namespace drz.XMLSerialize
 
     {
         /// <summary>
-        /// The value
+        /// Проект
         /// </summary>
         [XmlText()]
         public string Project;
@@ -120,9 +137,15 @@ namespace drz.XMLSerialize
         [XmlAttribute()]
         public string LegalCopyright;
 
+        /// <summary>
+        /// The company name
+        /// </summary>
         [XmlAttribute()]
         public string CompanyName;
 
+        /// <summary>
+        /// The comments
+        /// </summary>
         [XmlAttribute()]
         public string Comments;
 
@@ -187,7 +210,23 @@ namespace drz.XMLSerialize
 
     public partial class rootDescription
     {
+        /// <summary>
+        /// счетчик строк
+        /// </summary>
+        [XmlText()]
+        public string Counter;
 
+        /// <summary>
+        /// Номер строки
+        /// </summary>
+        [XmlAttribute()]
+        public string Row;
+
+        /// <summary>
+        ///Содержимое
+        /// </summary>
+        [XmlAttribute()]
+        public string Content;
     }
 
 }

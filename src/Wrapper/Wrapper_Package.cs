@@ -1,4 +1,5 @@
 ﻿using drz.Updater;
+using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 
-namespace drz.UpdatePrep
+namespace drz.Updater
 {
     /// <summary>
     ///Подготовка пакета обновления
@@ -29,9 +30,9 @@ namespace drz.UpdatePrep
         #region PackageWriter
 
         /// <summary>
-        /// писатель свойств пакадже /загрузчик приложения/
+        /// писатель свойств Package /загрузчик приложения/
         /// </summary>
-        internal bool XmlPackageWriter
+        internal bool WrapperPackage
         {
             get
             {
@@ -43,11 +44,11 @@ namespace drz.UpdatePrep
                              + "*.package";
                 ofd.FilterIndex = 2;
                 ofd.RestoreDirectory = true;
-
+ 
                 //!получим файлы Package            
                 if (ofd.ShowDialog() != DialogResult.OK)
                 {
-                    sErr = "Файл Package не загружен!\nПользователь отказался!";
+                    sErr = "Файл Package не загружен! Пользователь отказался!";
                     return false;
                 }
 
@@ -56,23 +57,24 @@ namespace drz.UpdatePrep
 
                 #endregion
 
-                //!Packages
-                XElement Packages = new XElement("Packages");
-                //ROOT.Add(Packages);
+                
 
-                foreach (string fil in sFilePrgs)
+                foreach (string filе in sFilePrgs)//think  фильтр расширения? хотя юзер выбрал явно файлы
                 {
-                    //!Package
-                    //think добавлять файл пакадж в папку для архива
-                    sFilePrg = fil;
-                    XElement Package = new XElement("Package"/*, versionInfoMod.ProductName*/);
-                    Packages.Add(Package);
+                    sFilePrg = filе;
+
+                    #region Package
+                    rootPackage Package = new rootPackage
+                    {
 #if NF
-                    Package.Add(new XAttribute("RefPath", PathNetCore.GetRelativePath(sDirFiles, sFilePrg)));//заглушка для фрэмворка, относительный путь
+                        RefPath = PathNetCore.GetRelativePath(sDirFiles, sFilePrg),//заглушка для фрэймворка, относительный путь
 #else
-                    Package.Add(new XAttribute("RefPath", Path.GetRelativePath(sDirFiles, sFilePrg)));
+                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),
 #endif
-                    Package.Add(new XAttribute("FileName", Path.GetFileName(sFilePrg)));
+                        FileName = Path.GetFileName(sFilePrg),
+                    };
+                    Packages.Add(Package);
+                    #endregion
 
                     //! список файлов для упаковки
                     arrFiletoZIP.Add(sFilePrg);

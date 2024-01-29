@@ -11,7 +11,7 @@ namespace drz.Updater
     internal partial class Utils
     {
 
-        internal  class ConsoleRequest
+        internal class ConsoleRequest
         {
 
 
@@ -28,12 +28,14 @@ namespace drz.Updater
             string sConsoleKeyN => ConsoleKeyN.ToString();
             string sConsoleKeyEsc => ConsoleKeyEsc.ToString();
 
-            /// <summary>Чтение кнопок консоли <br>
-            ///https://stackoverflow.com/questions/37359161/how-would-i-make-a-yes-no-prompt-in-console-using-c
-            ///</br>
+            /// <summary>
+            /// Чтение кнопок консоли <br>
+            /// https://stackoverflow.com/questions/37359161/how-would-i-make-a-yes-no-prompt-in-console-using-c
+            /// </br>
             /// </summary>
-            /// <param name="sConsolMesag">Выводимое сообщение</param>н
-            /// <returns>кнопка введенная пользователем</returns>
+            /// <value>
+            /// The console read key.
+            /// </value>
             internal ConsoleKey ConsoleReadKey
             {
                 get
@@ -42,7 +44,7 @@ namespace drz.Updater
                     do
                     {
                         Console.Write(sConsolMesag + " [" + sConsoleKeyY + "/" + sConsoleKeyN + "], " + sConsoleKeyEsc + " - Quit: ");
-                        response = Console.ReadKey(false).Key;   // true is intercept key (dont show), false is show
+                        response = Console.ReadKey(/*false*/).Key;   // true is intercept key (dont show), false is show
                         if (response != ConsoleKey.Enter)
                             Console.WriteLine();
 

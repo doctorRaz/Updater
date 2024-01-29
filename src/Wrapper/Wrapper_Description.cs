@@ -17,7 +17,7 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 
-namespace drz.UpdatePrep
+namespace drz.Updater
 {
     /// <summary>
     ///Подготовка пакета обновления
@@ -28,25 +28,37 @@ namespace drz.UpdatePrep
     {
         #region DescriptorWriter
 
+        #endregion
         /// <summary>
         /// писатель обновления, что нового
         /// </summary>
-        internal bool XmlDescriptorWriter
+        internal bool WrapperDescription
         {
             get
             {
-                //? описатель обновления
+                //undone описатель обновления
 
                 //!Descriptions
-                XElement Descriptions = new XElement("Descriptions");
-                //ROOT.Add(Descriptions);
 
+                ofd.Multiselect = true;
+                ofd.Title = "Выбери файл описания";
+                ofd.Filter = "Все файлы (*.*)|*.*|"
+                             + ".txt (*.txt)|"
+                             + "*.txt";
+                ofd.FilterIndex = 2;
+                ofd.RestoreDirectory = false;
+
+                //!получим файл описания         
+                if (ofd.ShowDialog() != DialogResult.OK)
+                {
+                    sErr = "Файл Обновления не загружен!\nПользователь отказался!";
+                    return false;
+                }
+                sFilePrg = ofd.FileName;
 
                 return true;
             }
         }
-        #endregion
-
 
     }
 }

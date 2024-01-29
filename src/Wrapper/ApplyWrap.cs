@@ -53,6 +53,7 @@ https://github.com/haf/DotNetZip.Semverd
 
 
 //***
+
 using drz.Updater;
 using drz.XMLSerialize;
 
@@ -68,6 +69,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
@@ -79,10 +81,12 @@ using System.Xml.Serialization;
 [assembly: AssemblyTitle("Wrapper Prep")]
 #endif
 
-namespace drz.UpdatePrep
+namespace drz.Updater
 {
 
-
+    /// <summary>
+    /// Старт
+    /// </summary>
     public static class Command
     {
         /// <summary>
@@ -91,6 +95,7 @@ namespace drz.UpdatePrep
         [STAThread]
         public static void Main(string[] args)
         {
+            //https://www.dotnetperls.com/console-color
 
             /* понты  
             // Demonstrate all colors and backgrounds.
@@ -109,14 +114,19 @@ namespace drz.UpdatePrep
             }
         */
 
-        //***
+            //***
+            Console.Title = "Wrapper";
 
-        Wrapper Wrap = new Wrapper();
+            Wrapper Wrap = new Wrapper();
 
             //! читаем свойства файлов обновления и пишем в XML
-            if (!Wrap.XmlFilePropWriter)
+            if (!Wrap.WrapperProjectAndModules)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.BackgroundColor = ConsoleColor.Blue;
                 Console.WriteLine(Wrap.sErr);
+                Console.ResetColor();
+
                 Console.WriteLine("Press any key");
                 Console.ReadKey();
                 return;
@@ -129,17 +139,23 @@ namespace drz.UpdatePrep
             //!интересуемся нужны ли файлы пакадж
             ConsRead.sConsolMesag = "Нужно ли добавить в обновление файлы Package??";
             ckRes = ConsRead.ConsoleReadKey;
-           
+
             if (ckRes == ConsoleKey.Escape) return; //esc =quit
             if (ckRes == ConsoleKey.Y)
             {
                 //! читаем свойства файлов Package и пишем в XML
-                if (!Wrap.XmlPackageWriter)
+                if (!Wrap.WrapperPackage)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Blue;
                     Console.WriteLine(Wrap.sErr);
+
+                    Console.ResetColor();
+
+                    Console.WriteLine("Продолжаем сборку");
                     Console.WriteLine("Press any key");
                     Console.ReadKey();
-                    return;
+                    //return;
                 }
             }
 
@@ -152,17 +168,17 @@ namespace drz.UpdatePrep
             if (ckRes == ConsoleKey.Y)
             {
                 //!читаем описание из текстового файла в XML
-                if (!Wrap.XmlDescriptorWriter)
+                if (!Wrap.WrapperDescription)
                 {
                     Console.WriteLine(Wrap.sErr);
                     Console.WriteLine("Press any key");
                     Console.ReadKey();
-                    return;
+                    //return;
                 }
             }
 
-            //BUG не работает
-            //x вывести в консоль
+            //BUG не работает вывод XML в консоль
+            // вывести в консоль
             //ConsRead.sConsolMesag = "НАпечатать собранный XML в консоль??";
 
             //ckRes = ConsRead.ConsoleReadKey;
@@ -171,30 +187,34 @@ namespace drz.UpdatePrep
             //{
             //    var xxx = Wrap.ROOT;
             //    Console.WriteLine(Wrap.ROOT.ToString());
+
             //}
 
             //?сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
-            var rr = Wrap.arrFiletoZIP;
-            var sZip = Wrap.sFullNameZIP;
 
-                      
-            //?дописать путь к zip в XML
+            if (!Wrap.WrapperZIP)
+            {
+                Console.WriteLine(Wrap.sErr);
+                Console.WriteLine("Press any key");
+                Console.ReadKey();
+                return;
+            }
+
+
+            //! дописать имя zip в XML (ледит рядом с XML
+            Wrap.ROOT.FileNameZIP = Path.GetFileName(Wrap.sFullNameZIP);
+
             //и др. служебную информацию
 
-            //x Wrap.XDOC.Save(Wrap.sFullNameXML);
-
-
             //!сохраним в файл
-            XmlSerializer xms  = new XmlSerializer(typeof(root));
-                  
+            XmlSerializer xms = new XmlSerializer(typeof(root));
+
             if (File.Exists(Wrap.sFullNameXML)) File.Delete(Wrap.sFullNameXML);
 
             using (FileStream fs = new FileStream(Wrap.sFullNameXML, FileMode.OpenOrCreate))
             {
                 xms.Serialize(fs, Wrap.ROOT);
             }
-
-
 
             Console.WriteLine("\tXML saved");
             Console.WriteLine("Press any key");
