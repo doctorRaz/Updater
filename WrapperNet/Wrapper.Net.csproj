@@ -75,7 +75,7 @@
 
 	<ItemGroup>
 	  <Reference Include="DotNetZip">
-	    <HintPath>..\include\net40\DotNetZip.dll</HintPath>
+	    <HintPath>..\packages\DotNetZip.1.16.0\lib\net40\DotNetZip.dll</HintPath>
 	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
