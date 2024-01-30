@@ -57,6 +57,9 @@ https://github.com/haf/DotNetZip.Semverd
 using drz.Updater;
 using drz.XMLSerialize;
 
+using Ionic.Zip;
+//using Ionic.Zlib;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -95,9 +98,80 @@ namespace drz.Updater
         [STAThread]
         public static void Main(string[] args)
         {
+            var filename = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\русские символы\PlotSPDSn.dll";//полный
+            
+            var sDirFiles = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater";//папка выше
+            var PathtoFile=Directory.GetParent(filename).FullName;//каталог файла
+
+            var RefPath = PathNetCore.GetRelativePath(sDirFiles, PathtoFile);
+
+            //zip
+            var NameOfZipFileTocreate = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\русские символы\Plot.zip";
+
+
+
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AlternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+                zip.AlternateEncodingUsage = ZipOption.Always;
+                zip.Encryption = EncryptionAlgorithm. WinZipAes256;
+                zip.Password = "0";
+
+                //zip.
+                zip.AddFile(filename,RefPath);
+                zip.Comment = "This zip was created at " + System.DateTime.Now.ToString("G") ;
+                zip.Save(NameOfZipFileTocreate);
+            }
+            { }
+
+            // extract entries that use encryption
+            using (ZipFile zip = ZipFile.Read(NameOfZipFileTocreate))
+            {
+                //zip.Password = "ккк";
+                zip.ExtractAll("extractDir");
+            }
+
+            /* чтение
+            string sFilDesc = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\changelog_beta.txt";
+
+            //  
+            using (StreamReader reader = new StreamReader(sFilDesc, Encoding.Default))
+            {
+                string line;
+                int iRow = 0;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    iRow++;
+                    Debug.WriteLine(iRow + " " + line);
+                }
+            }
+
+
+            */
+            /* masks
+            string[] masks = new[]
+                {
+                  "*.exe",
+                  "*.dll",
+                  "*.cfg",
+                  "*.cuix",
+                  "*.lsp",
+                  "*.xml",
+                  "*.json",
+                 };
+
+
+            string path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\";
+            var directory = new  DirectoryInfo (path );
+            //var masks = new[] { "*.mp3", "*.wav" };
+            var files = masks.SelectMany(directory.EnumerateFiles );
+
+            { }
+
+            */
+            /* понты  
             //https://www.dotnetperls.com/console-color
 
-            /* понты  
             // Demonstrate all colors and backgrounds.
             Type type = typeof(ConsoleColor);
             Console.ForegroundColor = ConsoleColor.White;
@@ -115,9 +189,24 @@ namespace drz.Updater
         */
 
             //***
+            #region Console
             Console.Title = "Wrapper";
+            //!console read
+            Utils.ConsoleRequest ConsRead = new Utils.ConsoleRequest();
+            ConsoleKey ckRes;
+            #endregion
 
             Wrapper Wrap = new Wrapper();
+
+            //! интересуемся писать в XML все файлы или только выбранные
+            ConsRead.sConsolMesag = "Писать в XML все файлы-Y, только выбранные- N??";
+            ckRes = ConsRead.ConsoleReadKey;
+
+            if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            if (ckRes == ConsoleKey.Y)//писать все файлы
+            {
+                Wrap.bWrapAllFile = true;
+            }
 
             //! читаем свойства файлов обновления и пишем в XML
             if (!Wrap.WrapperProjectAndModules)
@@ -131,10 +220,6 @@ namespace drz.Updater
                 Console.ReadKey();
                 return;
             }
-
-            //!console read
-            Utils.ConsoleRequest ConsRead = new Utils.ConsoleRequest();
-            ConsoleKey ckRes;
 
             //!интересуемся нужны ли файлы пакадж
             ConsRead.sConsolMesag = "Нужно ли добавить в обновление файлы Package??";
@@ -170,8 +255,16 @@ namespace drz.Updater
                 //!читаем описание из текстового файла в XML
                 if (!Wrap.WrapperDescription)
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.BackgroundColor = ConsoleColor.Blue;
+
                     Console.WriteLine(Wrap.sErr);
+
+                    Console.ResetColor();
+
+                    Console.WriteLine("Продолжаем сборку");
                     Console.WriteLine("Press any key");
+
                     Console.ReadKey();
                     //return;
                 }
@@ -191,6 +284,7 @@ namespace drz.Updater
             //}
 
             //?сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
+            // пароль записать в XML
 
             if (!Wrap.WrapperZIP)
             {
@@ -201,17 +295,14 @@ namespace drz.Updater
             }
 
 
-            //! дописать имя zip в XML (ледит рядом с XML
-            Wrap.ROOT.FileNameZIP = Path.GetFileName(Wrap.sFullNameZIP);
+
 
             //и др. служебную информацию
 
             //!сохраним в файл
             XmlSerializer xms = new XmlSerializer(typeof(root));
 
-            if (File.Exists(Wrap.sFullNameXML)) File.Delete(Wrap.sFullNameXML);
-
-            using (FileStream fs = new FileStream(Wrap.sFullNameXML, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(Wrap.sFullNameXML, FileMode.Create/*OpenOrCreate*/))
             {
                 xms.Serialize(fs, Wrap.ROOT);
             }

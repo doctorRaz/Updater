@@ -43,22 +43,34 @@ namespace drz.XMLSerialize
         public List<rootDescription> Descriptions;
 
         /// <summary>
-        /// Чисто для отладки потом изменить
+        /// дата числом, хз зачем
         /// </summary>
         [XmlAttribute()]
-        public ushort DateCreate;
+        public int DateCreate{ get; set; }
+
+        /// <summary>
+        /// дата время Wrapped
+        /// </summary>
+        [XmlAttribute()]
+        public string DateTime{ get; set; }
    
         /// <summary>
         /// только имя и расширение zip файла /будет лежать рядом с XML
         /// </summary>
         [XmlAttribute()]
-        public string FileNameZIP;
+        public string FileNameZIP{ get; set; }
+
+        /// <summary>
+        /// пароль для ZIP
+        /// </summary>
+        [XmlAttribute()]
+        public string PasswordZIP{ get; set; }
 
         /// <summary>
         /// на всякий
         /// </summary>
         [XmlText()]
-        public string Val;
+        public string Val{ get; set; }
 
     }
 
@@ -220,7 +232,7 @@ namespace drz.XMLSerialize
         /// Номер строки
         /// </summary>
         [XmlAttribute()]
-        public string Row;
+        public int Row;
 
         /// <summary>
         ///Содержимое

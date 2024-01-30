@@ -51,12 +51,26 @@ namespace drz.Updater
             ROOT.Packages = Packages;
 
             //!описание
-            Description = new List<rootDescription>();
+            Descriptions = new List<rootDescription>();
             //пристегиваем
-            ROOT.Descriptions = Description;
-                       
+            ROOT.Descriptions = Descriptions;
+
             ofd = new OpenFileDialog();
             arrFiletoZIP = new List<string>();//пустой массив
+
+            #region ROOT IFNO
+
+            //пароль для zip
+            ROOT.PasswordZIP = "12345";
+
+            //date int Wrapped
+            ROOT.DateCreate = (int)DateTime.Today.ToOADate();
+            //дата время создания
+            ROOT.DateTime = DateTime.Now.ToString("g");
+            
+            #endregion
+
+
         }
 
         #region Serialization
@@ -64,7 +78,7 @@ namespace drz.Updater
         /// <summary>
         /// корень коллекции
         /// </summary>
-       public root ROOT { get; set; }
+        public root ROOT { get; set; }
 
         /// <summary>
         /// The projects
@@ -84,7 +98,7 @@ namespace drz.Updater
         /// <summary>
         /// The description
         /// </summary>
-        List<rootDescription> Description;
+        List<rootDescription> Descriptions;
 
         #endregion
 
@@ -160,8 +174,11 @@ namespace drz.Updater
         /// <summary>Сообщения о ошибках</summary>
         internal string sErr { get; set; }
 
+        /// <summary>Сообщения о ошибках</summary>
+        internal bool bWrapAllFile { get; set; } = false;
+
         #region XML
-        
+
         /// <summary>
         /// расширение XML
         /// </summary>
@@ -193,22 +210,25 @@ namespace drz.Updater
 
         #endregion
 
-        #region Маски исключений
-       /// <summary>
-        /// Маски исключений файлов, которые не брать
+        #region Маски
+
+        /// <summary>
+        /// Маски включаемых файлов, которые брать
         /// </summary>
-        List<string> arrExcludedSupportedExt
+        List<string> arrIncludedSupportedExt
         {
             get
             {
                 return new List<string>
-         {
-             "*.bak",
-             "*.pdb",
-             "*.json",
-             "*.package",
-             sXMLext
-         };
+                 {
+                     "*.exe",
+                     "*.dll",
+                     "*.cfg",
+                     "*.cuix",
+                     "*.lsp",
+                     "*.xml",
+                     "*.json"
+                 };
             }
         }
 

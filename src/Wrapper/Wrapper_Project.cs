@@ -61,6 +61,8 @@ namespace drz.Updater
 
                 #region проверка годится ли файл есть ли там FileVersion
 
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+ 
                 foreach (string item in sFilePrgs)
                 {
                     sFilePrg = item;
@@ -73,7 +75,7 @@ namespace drz.Updater
                         return false;
                     }
                 }
-
+                Console.ResetColor();
                 #endregion
 
 
@@ -91,22 +93,12 @@ namespace drz.Updater
                 //!+полная версия файла
                 sVersion = versionInfPrj.FileVersion;
 
-                //Version vFileVersion = new Version(sVersion);
-
-                ////до минора версия
-                //sMajorMinorVersion = vFileVersion.Major + "." + vFileVersion.Minor;
-
-                ////!полное имя XML 
-                //sFullNameXML = Path.Combine(sDirParent, sShortName + sXMLext);           
-
-                ////!полное имя zip 
-                //sFullNameZIP = Path.Combine(sDirParent, sShortName + ".zip");
-
                 //радуем юзера, что пошли формировать XML
-
                 Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
-                Console.WriteLine(sFullNameXML);
 
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(sFullNameXML);
+                Console.ResetColor();
 
 
                 #endregion
@@ -114,25 +106,31 @@ namespace drz.Updater
 
                 //***
 
-                
-
-                //фильтр исключаемых масок
-                string sExcludedSupportedExt = string.Join(",", arrExcludedSupportedExt);
 
 
+                //фильтр включаемых масок
+                string sIncludedSupportedExt = string.Join(",", arrIncludedSupportedExt);
 
+                //список файлов для перебора
+                string[] sSetFiles;
 
-                //пошли перебирать файлы
-                foreach (string file in Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => !sExcludedSupportedExt.Contains(Path.GetExtension(s).ToLower())))
-                {                   
+                if (bWrapAllFile)//писать все файлы
+                {
+                    sSetFiles = Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => sIncludedSupportedExt.Contains(Path.GetExtension(s).ToLower())).ToArray();
+                }
+                else//только выбранные
+                {
+                    sSetFiles = sFilePrgs;
+                }
 
+                //!пошли перебирать файлы
+                foreach (string file in sSetFiles)
+                {
                     sFilePrg = file;
 
                     //!+ если файл имеет FileVersion то в Project иначе в модули
                     if (!string.IsNullOrEmpty(versionInfPrj.FileVersion))
                     {
-
-
                         #region Project
 
                         rootProject Project = new rootProject
@@ -156,11 +154,10 @@ namespace drz.Updater
                             //LegalCopyright = versionInfPrj.LegalCopyright,
                             //CompanyName = versionInfPrj.CompanyName,
                             //Comments = versionInfPrj.Comments,
-
                         };
                         //добавим к роот
                         Projects.Add(Project);
-                        
+
                         //!если файл выбран разработчиком проекта
                         if (sFilePrgs.Contains(file))
                         {
@@ -191,7 +188,7 @@ namespace drz.Updater
                     //! список вех файлов для упаковки
                     arrFiletoZIP.Add(sFilePrg);
                 }
-            
+
                 return true;
             }
         }

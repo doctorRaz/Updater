@@ -1,4 +1,5 @@
 ﻿using drz.Updater;
+using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace drz.Updater
             {
                 //undone описатель обновления
 
-                //!Descriptions
+                #region OFD
 
                 ofd.Multiselect = true;
                 ofd.Title = "Выбери файл описания";
@@ -54,7 +55,27 @@ namespace drz.Updater
                     sErr = "Файл Обновления не загружен!\nПользователь отказался!";
                     return false;
                 }
+
+                #endregion
                 sFilePrg = ofd.FileName;
+
+                using (StreamReader reader = new StreamReader(sFilePrg, Encoding.Default))
+                {
+                    string line;
+                    int iRow = 0;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        iRow++;
+                        Debug.WriteLine(iRow + " " + line);
+                        rootDescription Description = new rootDescription
+                        {
+                            Row=iRow,
+                            Counter=iRow.ToString(),
+                            Content=line
+                        };
+                        Descriptions.Add(Description);
+                    }
+                }
 
                 return true;
             }

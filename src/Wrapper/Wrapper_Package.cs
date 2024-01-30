@@ -59,7 +59,7 @@ namespace drz.Updater
 
                 
 
-                foreach (string filе in sFilePrgs)//think  фильтр расширения? хотя юзер выбрал явно файлы
+                foreach (string filе in sFilePrgs) 
                 {
                     sFilePrg = filе;
 
