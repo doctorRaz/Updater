@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{030545BD-2B8E-4AD6-BE0A-9EE30B097B75}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{1A4A6584-BCEE-4588-8EF5-09A6C136165A}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <RootNamespace>drz.Updater</RootNamespace>
-    <AssemblyName>Wrapper.NF</AssemblyName>
+    <AssemblyName>UnWrapper.NF</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <WarningLevel>4</WarningLevel>
@@ -35,14 +35,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\..\bin\Release\Wrapper.NF.xml</DocumentationFile>
+    <DocumentationFile>..\..\bin\Release\UnWrapper.NF.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>1001.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DotNetZip">
@@ -65,28 +66,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\src\Wrapper\ApplyWrap.cs">
-      <Link>src\Wrapper\ApplyWrap.cs</Link>
-    </Compile>
+	    <Compile Include="..\src\UnWrapper\INIT.cs">
+    <Link>src\UnWrapper\INIT.cs</Link>
+  </Compile>
+    <!--common-->
     <Compile Include="..\src\Common\Utils.cs">
       <Link>src\Common\Utils.cs</Link>
     </Compile>
-    <Compile Include="..\src\Wrapper\Wrapper_Project.cs">
-      <Link>src\Wrapper\Wrapper_Project.cs</Link>
-    </Compile>
-    <Compile Include="..\src\Wrapper\Wrapper_Package.cs">
-      <Link>src\Wrapper\Wrapper_Package.cs</Link>
-    </Compile>
-    <Compile Include="..\src\Wrapper\Wrapper_Description.cs">
-      <Link>src\Wrapper\Wrapper_Description.cs</Link>
-    </Compile>
-    <Compile Include="..\src\Wrapper\Wrapper_INIT.cs">
-      <Link>src\Wrapper\Wrapper_INIT.cs</Link>
-    </Compile>
-    <Compile Include="..\src\Wrapper\Wrapper_ZIP.cs">
-      <Link>src\Wrapper\Wrapper_ZIP.cs</Link>
-    </Compile>
-    <!--common-->
     <Compile Include="..\src\Common\Extensions.cs">
       <Link>src\Common\Extensions.cs</Link>
     </Compile>
@@ -94,15 +80,12 @@
       <Link>src\Common\XML_Serialize.cs</Link>
     </Compile>
     <!--common-->
-    <Compile Include="..\src\NF\PathNetCore.cs" >
-	<Link>src\NF\PathNetCore.cs</Link>
-	</Compile>
+    <Compile Include="..\src\NF\PathNetCore.cs">
+      <Link>src\NF\PathNetCore.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="1001.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

@@ -55,7 +55,7 @@
 
 	<ItemGroup>
 		<Compile Include="..\src\Wrapper\ApplyWrap.cs" Link="src\Wrapper\ApplyWrap.cs" />
-		<Compile Include="..\src\Wrapper\Wrapper_Utils.cs" Link="src\Wrapper\Wrapper_Utils.cs" />
+		<Compile Include="..\src\Common\Utils.cs" Link="src\Common\Utils.cs" />
 		<Compile Include="..\src\Wrapper\Wrapper_Project.cs" Link="src\Wrapper\Wrapper_Project.cs" />
 		<Compile Include="..\src\Wrapper\Wrapper_Package.cs" Link="src\Wrapper\Wrapper_Package.cs" />
 		<Compile Include="..\src\Wrapper\Wrapper_Description.cs" Link="src\Wrapper\Wrapper_Description.cs" />

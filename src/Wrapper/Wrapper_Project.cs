@@ -61,12 +61,12 @@ namespace drz.Updater
 
                 #region проверка годится ли файл есть ли там FileVersion
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
+               //x Console.ForegroundColor = ConsoleColor.DarkGreen;
  
                 foreach (string item in sFilePrgs)
                 {
                     sFilePrg = item;
-                    Console.WriteLine("Project: " + sFilePrg);
+                   //x Console.WriteLine("Project: " + sFilePrg);
                     if (string.IsNullOrEmpty(versionInfPrj.FileVersion))
                     {
                         sErr = "Неподходящий файл для главного файла проекта!"
@@ -75,7 +75,7 @@ namespace drz.Updater
                         return false;
                     }
                 }
-                Console.ResetColor();
+                //x Console.ResetColor();
                 #endregion
 
 
@@ -93,12 +93,12 @@ namespace drz.Updater
                 //!+полная версия файла
                 sVersion = versionInfPrj.FileVersion;
 
-                //радуем юзера, что пошли формировать XML
-                Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
+                //x радуем юзера, что пошли формировать XML
+               //x Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
 
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine(sFullNameXML);
-                Console.ResetColor();
+                //Console.ForegroundColor = ConsoleColor.DarkGreen;
+                //Console.WriteLine(sFullNameXML);
+                //Console.ResetColor();
 
 
                 #endregion
@@ -114,7 +114,7 @@ namespace drz.Updater
                 //список файлов для перебора
                 string[] sSetFiles;
 
-                if (bWrapAllFile)//писать все файлы
+                if (isWrapAllFile)//писать все файлы
                 {
                     sSetFiles = Directory.GetFiles(sDirFiles, "*.*", SearchOption.AllDirectories).Where(s => sIncludedSupportedExt.Contains(Path.GetExtension(s).ToLower())).ToArray();
                 }

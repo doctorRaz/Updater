@@ -35,29 +35,60 @@ namespace drz.Updater
         /// </summary>
         internal bool WrapperZIP
         {//https://github.com/haf/DotNetZip.Semverd
-         //https://github.com/haf/DotNetZip.Semverd
+         //https://documentation.help/DotNetZip/CSharp.htm
             get
             {
-//                using (ZipFile zip = new ZipFile("MyZipFile.zip")
-//                {
-////zip.AddFiles(arrFiletoZIP);
 
-//                    //zip.Add("c:\\images\\personal\\7440-N49th.png");
-//                    //              zip.AddFile("c:\\Desktop\\2008-Regional-Sales-Report.pdf");
-//                    //              zip.AddFile("ReadMe.txt");
-//                    //              zip.Save();
-//                };
+                //http://doctorraz.ucoz.ru/PlotSPDS/plot_test.zip без пароля не проходит
+                //http://doctorraz.ucoz.ru/PlotSPDS/wrapper.nf.zip
+                //http://doctorraz.ucoz.ru/PlotSPDS/plot_test.rar
 
+                //password save
+                ROOT.PasswordZIP = sProductName;
 
-
-            //undone упаковщик
-            var rr = arrFiletoZIP;//список для упаковки, писать в один каталог, дубликатов быть не должно
-                                  //think писать с относительным путем, тогда и извлекать по относительному из zip
-                var sZip = sFullNameZIP;//куда писать zip
-
-                //! после успешной упаковки дописать имя zip в XML (лежит рядом с XML)
+                //! имя zip в XML (лежит рядом с XML)
                 ROOT.FileNameZIP = Path.GetFileName(sFullNameZIP);
 
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AlternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
+                    zip.AlternateEncodingUsage = ZipOption.Always;
+                    zip.Encryption = EncryptionAlgorithm.WinZipAes256;
+                    zip.Password = ROOT.PasswordZIP;
+
+                    //перебираем файлы для упаковки
+                    foreach (string file in arrFiletoZIP)
+                    {
+                        //каталог упаковываемого файла
+                        string PathtoFile = Directory.GetParent(file).FullName;
+
+                        //относительный путь для упаковки
+#if NF
+                        string RefPathZip = PathNetCore.GetRelativePath(sDirFiles, PathtoFile);//NF не умеет GetRelativePath
+#else
+                         string   RefPathZip = Path.GetRelativePath(sDirFiles, PathtoFile);//! NF не умеет GetRelativePath
+#endif
+
+                        //добавим в архив
+                        zip.AddFile(file, RefPathZip);
+                    }
+
+                    //zip.Comment = "This zip was created at " + System.DateTime.Now.ToString("G");
+
+                    zip.Save(sFullNameZIP);
+                }
+                /*
+                //? для распаковщика
+                // удалять каталог перед извлечением
+                Directory.Delete(sShortName, true);
+                // extract entries that use encryption
+                using (ZipFile zip = ZipFile.Read(sFullNameZIP))
+                {
+                    //think выдергивать файлы по одному
+                    zip.Password = ROOT.PasswordZIP;
+                    zip.ExtractAll(sShortName, ExtractExistingFileAction.OverwriteSilently);
+                }
+                */
                 return true;
             }
         }

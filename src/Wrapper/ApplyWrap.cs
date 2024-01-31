@@ -98,38 +98,7 @@ namespace drz.Updater
         [STAThread]
         public static void Main(string[] args)
         {
-            var filename = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\русские символы\PlotSPDSn.dll";//полный
-            
-            var sDirFiles = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater";//папка выше
-            var PathtoFile=Directory.GetParent(filename).FullName;//каталог файла
-
-            var RefPath = PathNetCore.GetRelativePath(sDirFiles, PathtoFile);
-
-            //zip
-            var NameOfZipFileTocreate = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\русские символы\Plot.zip";
-
-
-
-            using (ZipFile zip = new ZipFile())
-            {
-                zip.AlternateEncoding = System.Text.Encoding.GetEncoding("UTF-8");
-                zip.AlternateEncodingUsage = ZipOption.Always;
-                zip.Encryption = EncryptionAlgorithm. WinZipAes256;
-                zip.Password = "0";
-
-                //zip.
-                zip.AddFile(filename,RefPath);
-                zip.Comment = "This zip was created at " + System.DateTime.Now.ToString("G") ;
-                zip.Save(NameOfZipFileTocreate);
-            }
-            { }
-
-            // extract entries that use encryption
-            using (ZipFile zip = ZipFile.Read(NameOfZipFileTocreate))
-            {
-                //zip.Password = "ккк";
-                zip.ExtractAll("extractDir");
-            }
+           
 
             /* чтение
             string sFilDesc = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\changelog_beta.txt";
@@ -205,7 +174,7 @@ namespace drz.Updater
             if (ckRes == ConsoleKey.Escape) return; //esc =quit
             if (ckRes == ConsoleKey.Y)//писать все файлы
             {
-                Wrap.bWrapAllFile = true;
+                Wrap.isWrapAllFile = true;
             }
 
             //! читаем свойства файлов обновления и пишем в XML
@@ -264,7 +233,6 @@ namespace drz.Updater
 
                     Console.WriteLine("Продолжаем сборку");
                     Console.WriteLine("Press any key");
-
                     Console.ReadKey();
                     //return;
                 }
@@ -288,12 +256,22 @@ namespace drz.Updater
 
             if (!Wrap.WrapperZIP)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.BackgroundColor = ConsoleColor.Blue;
+
                 Console.WriteLine(Wrap.sErr);
+                Console.WriteLine("Press any key");
+                Console.ReadKey();
+                 Console.ResetColor();
+
                 Console.WriteLine("Press any key");
                 Console.ReadKey();
                 return;
             }
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.WriteLine("ZIP archived:\t"+Wrap.sFullNameZIP);
 
 
 
@@ -307,8 +285,23 @@ namespace drz.Updater
                 xms.Serialize(fs, Wrap.ROOT);
             }
 
-            Console.WriteLine("\tXML saved");
-            Console.WriteLine("Press any key");
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.WriteLine("XML saved:\t"+Wrap.sFullNameXML);
+
+            Console.ResetColor();
+
+            //! открыть каталог 
+            ConsRead.sConsolMesag = "Открыть каталог с файлами??";
+
+            ckRes = ConsRead.ConsoleReadKey;
+            //x if (ckRes == ConsoleKey.Escape) return; //esc =quit
+            if (ckRes == ConsoleKey.Y)
+            {
+                //undone открыть папку с zip и XML
+            }
+
+                Console.WriteLine("Press any key");
             Console.ReadKey();
             return;
 

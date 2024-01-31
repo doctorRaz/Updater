@@ -21,19 +21,41 @@ using System.Xml.Linq;
 namespace drz.Updater
 {
     /// <summary>
-    ///Подготовка пакета обновления
-    ///описание в XML и упаковка
+    ///Распаковка пакета обновления
+    ///чтение в XML и распаковка
     /// </summary>
-    public partial class Wrapper
-
+    public partial class UnWrapper:IDisposable 
+//? Заготовка, отсюда инит класса дальше все автоматически
     {
         #region INIT CLASS
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Wrapper"/> class.
+        /// Gets or sets the s asm full path.
         /// </summary>
-        public Wrapper()
-        {
+        /// <value>
+        /// The s asm full path.
+        /// </value>
+        public  string sAsmFullPath{ get; set; }
+
+        /// <summary>
+        /// Gets or sets the s URL domain.
+        /// </summary>
+        /// <value>
+        /// The s URL domain.
+        /// </value>
+         public string sUrlDomain{ get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnWrapper"/> class.
+        /// </summary>
+        public UnWrapper( Assembly asm, string sUrlDomain)
+        {//отсюда дергаем приложением запрос на обновление
+            sAsmFullPath = asm.Location;
+
+            this.sUrlDomain = sUrlDomain;
+            //получаем имя приложения, версию сборки
+
+            /*
             ROOT = new root();
             //!модуль проектов
             Projects = new List<rootProject>();
@@ -70,9 +92,16 @@ namespace drz.Updater
             
             #endregion
 
-
+            */
         }
 
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
+        }
+
+
+        /*
         #region Serialization
 
         /// <summary>
@@ -233,9 +262,9 @@ namespace drz.Updater
         }
 
         #endregion
+        */
 
         #endregion
-
 
     }
 }
