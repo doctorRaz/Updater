@@ -18,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialize test", "Serialize
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnWrapper.NF", "UnWrapperNF\UnWrapper.NF.csproj", "{1A4A6584-BCEE-4588-8EF5-09A6C136165A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnWrapperTest", "UnWrapperTest\UnWrapperTest.csproj", "{25D58C07-2AEF-41D8-821E-84EF354AF0D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestUnWrapper", "TestUnWrapper\TestUnWrapper.csproj", "{25D58C07-2AEF-41D8-821E-84EF354AF0D7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1A4A6584-BCEE-4588-8EF5-09A6C136165A} = {1A4A6584-BCEE-4588-8EF5-09A6C136165A}
 	EndProjectSection

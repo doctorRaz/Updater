@@ -1,4 +1,10 @@
 ﻿/*
+ //undone рабочий код, но нужна отладка по взаимодействию совместно с распаковщиком 
+
+
+=================================================================================
+=================================================================================
+//todo общее
 Правитть апли врап 
 1. добавить настройки:
 * список игнорируемых расширений
@@ -14,10 +20,10 @@
 заменятель файлов
 
 
-#При генерации обновления:
+#При генерации обновления: Как будет...
 
  ~1. К названию XML файла добавлять **minor** программы~
-2. К названию zip добавлять **minor** программы 
+ ~2. К названию zip добавлять **minor** программы~
 >Все обновления внутри **minor** только главный модуль программы + модули имеющие _FileVersion_. 
 
 Соответственно каждый минор обновляется из своего zip+minor
@@ -54,26 +60,12 @@ https://github.com/haf/DotNetZip.Semverd
 
 //***
 
-using drz.Updater;
 using drz.XMLSerialize;
-
-using Ionic.Zip;
 //using Ionic.Zlib;
 
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Security.Permissions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 
 
@@ -98,65 +90,6 @@ namespace drz.Updater
         [STAThread]
         public static void Main(string[] args)
         {
-           
-
-            /* чтение
-            string sFilDesc = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\bunle test\changelog_beta.txt";
-
-            //  
-            using (StreamReader reader = new StreamReader(sFilDesc, Encoding.Default))
-            {
-                string line;
-                int iRow = 0;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    iRow++;
-                    Debug.WriteLine(iRow + " " + line);
-                }
-            }
-
-
-            */
-            /* masks
-            string[] masks = new[]
-                {
-                  "*.exe",
-                  "*.dll",
-                  "*.cfg",
-                  "*.cuix",
-                  "*.lsp",
-                  "*.xml",
-                  "*.json",
-                 };
-
-
-            string path = @"d:\@Developers\В работе\!Текущее\Programmers\!NET\Updater\@resourse\";
-            var directory = new  DirectoryInfo (path );
-            //var masks = new[] { "*.mp3", "*.wav" };
-            var files = masks.SelectMany(directory.EnumerateFiles );
-
-            { }
-
-            */
-            /* понты  
-            //https://www.dotnetperls.com/console-color
-
-            // Demonstrate all colors and backgrounds.
-            Type type = typeof(ConsoleColor);
-            Console.ForegroundColor = ConsoleColor.White;
-            foreach (var name in Enum.GetNames(type))
-            {
-                Console.BackgroundColor = (ConsoleColor)Enum.Parse(type, name);
-                Console.WriteLine(name);
-            }
-            Console.BackgroundColor = ConsoleColor.Black;
-            foreach (var name in Enum.GetNames(type))
-            {
-                Console.ForegroundColor = (ConsoleColor)Enum.Parse(type, name);
-                Console.WriteLine(name);
-            }
-        */
-
             //***
             #region Console
             Console.Title = "Wrapper";
@@ -238,20 +171,7 @@ namespace drz.Updater
                 }
             }
 
-            //BUG не работает вывод XML в консоль
-            // вывести в консоль
-            //ConsRead.sConsolMesag = "НАпечатать собранный XML в консоль??";
-
-            //ckRes = ConsRead.ConsoleReadKey;
-            //if (ckRes == ConsoleKey.Escape) return; //esc =quit
-            //if (ckRes == ConsoleKey.Y)
-            //{
-            //    var xxx = Wrap.ROOT;
-            //    Console.WriteLine(Wrap.ROOT.ToString());
-
-            //}
-
-            //?сохраним ZIP в метод, пароль имя приложения/или не парить мозг а "00000"
+            //сохраним ZIP
             // пароль записать в XML
 
             if (!Wrap.WrapperZIP)
@@ -262,7 +182,7 @@ namespace drz.Updater
                 Console.WriteLine(Wrap.sErr);
                 Console.WriteLine("Press any key");
                 Console.ReadKey();
-                 Console.ResetColor();
+                Console.ResetColor();
 
                 Console.WriteLine("Press any key");
                 Console.ReadKey();
@@ -271,11 +191,7 @@ namespace drz.Updater
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.BackgroundColor = ConsoleColor.Blue;
-            Console.WriteLine("ZIP archived:\t"+Wrap.sFullNameZIP);
-
-
-
-            //и др. служебную информацию
+            Console.WriteLine("ZIP archived:\t" + Wrap.sFullNameZIP);
 
             //!сохраним в файл
             XmlSerializer xms = new XmlSerializer(typeof(root));
@@ -287,24 +203,23 @@ namespace drz.Updater
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.BackgroundColor = ConsoleColor.Blue;
-            Console.WriteLine("XML saved:\t"+Wrap.sFullNameXML);
+            Console.WriteLine("XML saved:\t" + Wrap.sFullNameXML);
 
             Console.ResetColor();
 
-            //! открыть каталог 
+            //открыть каталог 
             ConsRead.sConsolMesag = "Открыть каталог с файлами??";
 
             ckRes = ConsRead.ConsoleReadKey;
-            //x if (ckRes == ConsoleKey.Escape) return; //esc =quit
+ 
             if (ckRes == ConsoleKey.Y)
             {
                 //undone открыть папку с zip и XML
             }
 
-                Console.WriteLine("Press any key");
+            Console.WriteLine("Press any key");
             Console.ReadKey();
             return;
-
 
         }
 

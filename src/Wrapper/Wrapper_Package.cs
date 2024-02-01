@@ -1,21 +1,7 @@
-﻿using drz.Updater;
-using drz.XMLSerialize;
+﻿using drz.XMLSerialize;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Permissions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 
 namespace drz.Updater
@@ -44,7 +30,7 @@ namespace drz.Updater
                              + "*.package";
                 ofd.FilterIndex = 2;
                 ofd.RestoreDirectory = true;
- 
+
                 //!получим файлы Package            
                 if (ofd.ShowDialog() != DialogResult.OK)
                 {
@@ -57,9 +43,7 @@ namespace drz.Updater
 
                 #endregion
 
-                
-
-                foreach (string filе in sFilePrgs) 
+                foreach (string filе in sFilePrgs)
                 {
                     sFilePrg = filе;
 
@@ -69,7 +53,7 @@ namespace drz.Updater
 #if NF
                         RefPath = PathNetCore.GetRelativePath(sDirFiles, sFilePrg),//заглушка для фрэймворка, относительный путь
 #else
-                            RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),
+                        RefPath = Path.GetRelativePath(sDirFiles, sFilePrg),
 #endif
                         FileName = Path.GetFileName(sFilePrg),
                     };
@@ -85,7 +69,6 @@ namespace drz.Updater
         }
 
         #endregion
-
 
     }
 }

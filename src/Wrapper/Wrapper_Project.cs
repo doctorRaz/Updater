@@ -1,21 +1,8 @@
-﻿using drz.Updater;
-using drz.XMLSerialize;
+﻿using drz.XMLSerialize;
 
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Permissions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 
 namespace drz.Updater
@@ -60,13 +47,10 @@ namespace drz.Updater
                 #endregion
 
                 #region проверка годится ли файл есть ли там FileVersion
-
-               //x Console.ForegroundColor = ConsoleColor.DarkGreen;
  
                 foreach (string item in sFilePrgs)
                 {
                     sFilePrg = item;
-                   //x Console.WriteLine("Project: " + sFilePrg);
                     if (string.IsNullOrEmpty(versionInfPrj.FileVersion))
                     {
                         sErr = "Неподходящий файл для главного файла проекта!"
@@ -75,9 +59,8 @@ namespace drz.Updater
                         return false;
                     }
                 }
-                //x Console.ResetColor();
+             
                 #endregion
-
 
                 #region Set general properties /прибито гвоздями/
 
@@ -92,21 +75,10 @@ namespace drz.Updater
 
                 //!+полная версия файла
                 sVersion = versionInfPrj.FileVersion;
-
-                //x радуем юзера, что пошли формировать XML
-               //x Console.WriteLine("Формирую XML для {0} {1}", sProductName, sVersion);
-
-                //Console.ForegroundColor = ConsoleColor.DarkGreen;
-                //Console.WriteLine(sFullNameXML);
-                //Console.ResetColor();
-
-
+                               
                 #endregion
-
-
+                
                 //***
-
-
 
                 //фильтр включаемых масок
                 string sIncludedSupportedExt = string.Join(",", arrIncludedSupportedExt);
@@ -150,12 +122,13 @@ namespace drz.Updater
                             InternalName = versionInfPrj.InternalName,
                             FileVersion = versionInfPrj.FileVersion,
                             ProductVersion = versionInfPrj.ProductVersion,
+                            ////может когда пригодиться 
                             //LegalTrademarks = versionInfPrj.LegalTrademarks,
                             //LegalCopyright = versionInfPrj.LegalCopyright,
                             //CompanyName = versionInfPrj.CompanyName,
                             //Comments = versionInfPrj.Comments,
                         };
-                        //добавим к роот
+                        //добавим к root
                         Projects.Add(Project);
 
                         //!если файл выбран разработчиком проекта

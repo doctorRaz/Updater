@@ -1,21 +1,10 @@
-﻿using drz.Updater;
-using drz.XMLSerialize;
+﻿using drz.XMLSerialize;
 
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Security.Permissions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 
 namespace drz.Updater
@@ -83,22 +72,22 @@ namespace drz.Updater
         /// <summary>
         /// The projects
         /// </summary>
-        List<rootProject> Projects;
+        List<rootProject> Projects{ get; set; }
 
         /// <summary>
         /// The modules
         /// </summary>
-        List<rootModule> Modules;
+        List<rootModule> Modules{ get; set; }
 
         /// <summary>
         /// The package
         /// </summary>
-        List<rootPackage> Packages;
+        List<rootPackage> Packages{ get; set; }
 
         /// <summary>
         /// The description
         /// </summary>
-        List<rootDescription> Descriptions;
+        List<rootDescription> Descriptions{ get; set; }
 
         #endregion
 

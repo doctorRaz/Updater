@@ -13,7 +13,7 @@ namespace System.IO
 {
     //!+Рабочий вариант
 
-     /// <summary>
+    /// <summary>
     /// Provides methods for processing file system strings in a cross-platform manner. Most of the methods don't do a complete parsing (such as examining a UNC hostname), but they will handle most string operations.
     /// </summary>
     public static class PathNetCore
