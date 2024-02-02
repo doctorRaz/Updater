@@ -167,10 +167,6 @@ namespace drz.Updater
         #endregion
 
 
-
-
-
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UnWrapper"/> class.
         /// </summary>
@@ -178,7 +174,8 @@ namespace drz.Updater
         {
             try
             {
-
+                //настраиваем логгер
+                LoggerConfig();
 
                 //отсюда дергаем приложением запрос на обновление
                 //получаем имя файла сборки
