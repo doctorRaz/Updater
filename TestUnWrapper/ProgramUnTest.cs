@@ -1,4 +1,4 @@
-using drz.Updater;
+﻿using drz.Updater;
 
 using System;
 using System.Reflection;
