@@ -1,4 +1,4 @@
-﻿using Ionic.Zip;
+using Ionic.Zip;
 
 using System.IO;
 

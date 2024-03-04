@@ -1,4 +1,4 @@
-﻿using drz.XMLSerialize;
+using drz.XMLSerialize;
 
 using System.IO;
 using System.Windows.Forms;
