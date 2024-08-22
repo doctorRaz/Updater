@@ -8,7 +8,7 @@
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<UseWPF>true</UseWPF>
 		<UseWindowsForms>True</UseWindowsForms>
-		<BaseOutputPath>..\..\bin</BaseOutputPath>
+		<BaseOutputPath>..\bin</BaseOutputPath>
 		<RootNamespace>drz.Updater</RootNamespace>
 
 		<ProduceReferenceAssembly>False</ProduceReferenceAssembly>

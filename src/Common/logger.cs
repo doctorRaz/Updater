@@ -12,6 +12,7 @@ using NLog.Layouts;
 using NLog.Targets;
 
 using System;
+using System.IO;
 
 
 namespace drz.Updater

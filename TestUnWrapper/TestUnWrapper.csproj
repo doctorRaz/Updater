@@ -42,7 +42,8 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UnWrapper.NF">
-      <HintPath>..\..\bin\$(Configuration)\UnWrapper.NF.dll</HintPath>
+      <HintPath>..\bin\Release\UnWrapper.NF.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 using System;
 using System.Reflection;
 
-namespace UnWrapperTest
+namespace drz.UnWrapperTest
 {
     internal class ProgramUnTest
     {
